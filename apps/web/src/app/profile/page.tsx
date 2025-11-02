@@ -139,30 +139,30 @@ export default function ProfilePage() {
               {activeTab === 'overview' && (
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-3 gap-4">
-                    <div className="bg-gradient-to-br from-primary-500 to-primary-600 text-white p-6 rounded-xl">
+                    <div className="bg-gradient-to-br from-golden-honey to-golden-honey-dark text-deep-indigo-dark p-6 rounded-xl">
                       <div className="text-sm opacity-90 mb-1">Current Balance</div>
                       <div className="text-3xl font-bold">{user.honeyBalance} 🍯</div>
                     </div>
-                    <div className="bg-green-50 border border-green-200 p-6 rounded-xl">
-                      <div className="text-sm text-green-700 mb-1">Total Earned</div>
-                      <div className="text-3xl font-bold text-green-600">{user.totalEarned}</div>
+                    <div className="bg-green-500/10 border border-green-500/30 p-6 rounded-xl">
+                      <div className="text-sm text-green-400 mb-1">Total Earned</div>
+                      <div className="text-3xl font-bold text-green-400">{user.totalEarned}</div>
                     </div>
-                    <div className="bg-orange-50 border border-orange-200 p-6 rounded-xl">
-                      <div className="text-sm text-orange-700 mb-1">Total Spent</div>
-                      <div className="text-3xl font-bold text-orange-600">{user.totalSpent}</div>
+                    <div className="bg-orange-500/10 border border-orange-500/30 p-6 rounded-xl">
+                      <div className="text-sm text-orange-400 mb-1">Total Spent</div>
+                      <div className="text-3xl font-bold text-orange-400">{user.totalSpent}</div>
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Profile Information</h3>
+                  <div className="bg-deep-indigo-light/10 rounded-xl p-6 border border-deep-indigo-light/20">
+                    <h3 className="text-lg font-bold text-white mb-4">Profile Information</h3>
                     <div className="space-y-3">
                       <div>
-                        <label className="text-sm text-gray-600">Bio</label>
-                        <p className="text-gray-900">{user.bio || 'No bio yet'}</p>
+                        <label className="text-sm text-white/60">Bio</label>
+                        <p className="text-white">{user.bio || 'No bio yet'}</p>
                       </div>
                       <div>
-                        <label className="text-sm text-gray-600">Location</label>
-                        <p className="text-gray-900">{user.location || 'Not set'}</p>
+                        <label className="text-sm text-white/60">Location</label>
+                        <p className="text-white">{user.location || 'Not set'}</p>
                       </div>
                     </div>
                   </div>
@@ -172,18 +172,18 @@ export default function ProfilePage() {
               {/* Honey History Tab */}
               {activeTab === 'honey' && (
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Transactions</h3>
+                  <h3 className="text-lg font-bold text-white mb-4">Recent Transactions</h3>
                   <div className="space-y-3">
                     {[
                       { type: 'earn', amount: 100, source: 'Welcome Bonus', date: 'Today' },
                       { type: 'earn', amount: 25, source: 'Daily Login', date: '2 hours ago' },
                     ].map((transaction, i) => (
-                      <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                      <div key={i} className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl border border-deep-indigo-light/10">
                         <div>
-                          <div className="font-semibold text-gray-900">{transaction.source}</div>
-                          <div className="text-sm text-gray-500">{transaction.date}</div>
+                          <div className="font-semibold text-white">{transaction.source}</div>
+                          <div className="text-sm text-white/60">{transaction.date}</div>
                         </div>
-                        <div className={`font-bold ${transaction.type === 'earn' ? 'text-green-600' : 'text-red-600'}`}>
+                        <div className={`font-bold ${transaction.type === 'earn' ? 'text-green-400' : 'text-red-400'}`}>
                           {transaction.type === 'earn' ? '+' : '-'}{transaction.amount} 🍯
                         </div>
                       </div>
@@ -196,51 +196,51 @@ export default function ProfilePage() {
               {activeTab === 'settings' && (
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Account Settings</h3>
+                    <h3 className="text-lg font-bold text-white mb-4">Account Settings</h3>
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <label className="block text-sm font-medium text-white mb-1">Name</label>
                         <input
                           type="text"
                           defaultValue={user.name}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                        <label className="block text-sm font-medium text-white mb-1">Bio</label>
                         <textarea
                           defaultValue={user.bio}
                           rows={3}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
                           placeholder="Tell us about yourself..."
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <label className="block text-sm font-medium text-white mb-1">Location</label>
                         <input
                           type="text"
                           defaultValue={user.location}
                           placeholder="Nairobi, Kenya"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
                         />
                       </div>
-                      <button className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
+                      <button className="bg-golden-honey hover:bg-golden-honey-dark text-deep-indigo-dark px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-colors">
                         <Save className="w-5 h-5" />
                         Save Changes
                       </button>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Preferences</h3>
+                  <div className="border-t border-deep-indigo-light/20 pt-6">
+                    <h3 className="text-lg font-bold text-white mb-4">Preferences</h3>
                     <div className="space-y-3">
-                      <label className="flex items-center justify-between p-4 bg-gray-50 rounded-xl cursor-pointer">
-                        <span className="text-gray-900">Email Notifications</span>
-                        <input type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+                      <label className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl cursor-pointer border border-deep-indigo-light/20">
+                        <span className="text-white">Email Notifications</span>
+                        <input type="checkbox" className="rounded border-deep-indigo-light/20 text-golden-honey focus:ring-golden-honey bg-deep-indigo-light/10" />
                       </label>
-                      <label className="flex items-center justify-between p-4 bg-gray-50 rounded-xl cursor-pointer">
-                        <span className="text-gray-900">Push Notifications</span>
-                        <input type="checkbox" defaultChecked className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+                      <label className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl cursor-pointer border border-deep-indigo-light/20">
+                        <span className="text-white">Push Notifications</span>
+                        <input type="checkbox" defaultChecked className="rounded border-deep-indigo-light/20 text-golden-honey focus:ring-golden-honey bg-deep-indigo-light/10" />
                       </label>
                     </div>
                   </div>
@@ -252,25 +252,25 @@ export default function ProfilePage() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-50 shadow-lg">
+      <nav className="fixed bottom-0 left-0 right-0 bg-deep-indigo border-t border-deep-indigo-light/20 px-2 py-2 z-50 shadow-lg backdrop-blur-sm bg-deep-indigo/95">
         <div className="max-w-7xl mx-auto flex items-center justify-around">
-          <Link href="/dashboard" className="flex flex-col items-center gap-1 text-gray-600 hover:text-primary-600 py-2 px-4 rounded-xl transition-colors">
+          <Link href="/dashboard" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
             <Home className="w-6 h-6" />
             <span className="text-xs font-medium">Home</span>
           </Link>
-          <Link href="/tools" className="flex flex-col items-center gap-1 text-gray-600 hover:text-primary-600 py-2 px-4 rounded-xl transition-colors">
+          <Link href="/tools" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
             <Wrench className="w-6 h-6" />
             <span className="text-xs font-medium">Tools</span>
           </Link>
-          <Link href="/learn" className="flex flex-col items-center gap-1 text-gray-600 hover:text-primary-600 py-2 px-4 rounded-xl transition-colors">
+          <Link href="/learn" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
             <GraduationCap className="w-6 h-6" />
             <span className="text-xs font-medium">Learn</span>
           </Link>
-          <Link href="/games" className="flex flex-col items-center gap-1 text-gray-600 hover:text-primary-600 py-2 px-4 rounded-xl transition-colors">
+          <Link href="/games" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
             <Gamepad2 className="w-6 h-6" />
             <span className="text-xs font-medium">Play</span>
           </Link>
-          <Link href="/marketplace" className="flex flex-col items-center gap-1 text-gray-600 hover:text-primary-600 py-2 px-4 rounded-xl transition-colors">
+          <Link href="/marketplace" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
             <ShoppingBag className="w-6 h-6" />
             <span className="text-xs font-medium">Shop</span>
           </Link>
