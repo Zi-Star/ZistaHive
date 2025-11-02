@@ -1,10 +1,11 @@
 'use client'
 
-import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Settings, Search, Download, QrCode, Calculator, Lock, RefreshCw, Image, FileText, Palette, Code2, Hash, Star, Bell } from 'lucide-react'
+import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Settings, Search, Download, QrCode, Calculator, Lock, RefreshCw, Image as ImageIcon, FileText, Palette, Code2, Hash, Star, Bell } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { PageTransition } from '../../components/PageTransition'
+import ImageComponent from 'next/image'
 
 export default function ToolsPage() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -16,7 +17,7 @@ export default function ToolsPage() {
     { id: 3, name: 'Unit Converter', icon: RefreshCw, category: 'Utility', description: 'Convert units & measurements', color: 'from-orange-500 to-amber-500' },
     { id: 4, name: 'Password Generator', icon: Lock, category: 'Security', description: 'Generate secure passwords', color: 'from-purple-500 to-violet-500' },
     { id: 5, name: 'Calculator', icon: Calculator, category: 'Utility', description: 'Advanced calculator', color: 'from-green-500 to-emerald-500' },
-    { id: 6, name: 'Image Compressor', icon: Image, category: 'Media', description: 'Reduce image file size', color: 'from-indigo-500 to-blue-500' },
+    { id: 6, name: 'Image Compressor', icon: ImageIcon, category: 'Media', description: 'Reduce image file size', color: 'from-indigo-500 to-blue-500' },
     { id: 7, name: 'PDF Tools', icon: FileText, category: 'Documents', description: 'Merge, split PDFs', color: 'from-teal-500 to-cyan-500' },
     { id: 8, name: 'Color Picker', icon: Palette, category: 'Design', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500' },
     { id: 9, name: 'JSON Formatter', icon: Code2, category: 'Developer', description: 'Format & validate JSON', color: 'from-yellow-500 to-orange-500' },
@@ -24,37 +25,41 @@ export default function ToolsPage() {
   ]
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-deep-indigo-dark">
       {/* Top Bar */}
-      <header className="bg-white border-b border-gray-200 px-4 lg:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-md">
-            <Star className="w-5 h-5 text-white fill-white" />
-          </div>
-          <span className="text-xl font-bold text-gray-900 hidden sm:block">Zista</span>
+      <header className="bg-deep-indigo border-b border-deep-indigo-light/20 px-4 lg:px-6 py-3 flex items-center justify-between sticky top-0 z-50 backdrop-blur-sm bg-deep-indigo/95">
+        <Link href="/" className="flex items-center gap-3">
+          <ImageComponent 
+            src="/Logo.png" 
+            alt="Zista Logo" 
+            width={32} 
+            height={32} 
+            className="w-8 h-8"
+          />
+          <span className="text-xl font-bold text-white">Zista</span>
         </Link>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-primary-50 px-3 py-2 rounded-xl border border-primary-200">
+          <div className="flex items-center gap-2 bg-golden-honey/10 px-3 py-2 rounded-xl border border-golden-honey/30">
             <div className="text-2xl">🍯</div>
             <div>
-              <div className="text-sm font-bold text-gray-900">1250</div>
-              <div className="text-xs text-gray-600 hidden sm:block">Honey</div>
+              <div className="text-sm font-bold text-golden-honey">1250</div>
+              <div className="text-xs text-golden-honey/70 hidden sm:block">Honey</div>
             </div>
           </div>
 
-          <button className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors">
-            <Bell className="w-5 h-5 text-gray-700" />
+          <button className="relative p-2 hover:bg-deep-indigo-light/30 rounded-xl transition-colors">
+            <Bell className="w-5 h-5 text-white" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
           <Link href="/profile">
-            <div className="flex items-center gap-2 hover:bg-gray-100 rounded-xl p-2 transition-colors">
-              <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <User className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-2 hover:bg-deep-indigo-light/30 rounded-xl p-2 transition-colors">
+              <div className="w-9 h-9 bg-gradient-to-br from-golden-honey to-golden-honey-dark rounded-xl flex items-center justify-center">
+                <User className="w-5 h-5 text-deep-indigo" />
               </div>
               <div className="hidden lg:block">
-                <div className="text-sm font-semibold text-gray-900 leading-tight">Ziramzis</div>
+                <div className="text-sm font-semibold text-white leading-tight">Ziramzis</div>
               </div>
             </div>
           </Link>
@@ -62,42 +67,49 @@ export default function ToolsPage() {
       </header>
 
       <PageTransition>
-        <main className="flex-1 overflow-y-auto pb-20">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {tools.map((tool) => (
-              <div
-                key={tool.id}
-                className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-2xl hover:border-primary-300 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-              >
-                <div className={`w-14 h-14 mb-4 bg-gradient-to-br ${tool.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                  <tool.icon className="w-7 h-7 text-white" />
+        <main className="flex-1 overflow-y-auto pb-20 p-4 lg:p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">All Tools</h1>
+              <p className="text-white/70">Discover 20+ powerful productivity tools</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {tools.map((tool) => (
+                <div
+                  key={tool.id}
+                  className="group bg-deep-indigo border border-deep-indigo-light/20 rounded-2xl p-6 hover:shadow-2xl hover:border-golden-honey/50 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                >
+                  <div className={`w-14 h-14 mb-4 bg-gradient-to-br ${tool.color} rounded-xl flex items-center justify-center shadow-lg`}>
+                    <tool.icon className="w-7 h-7 text-white" />
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-golden-honey transition-colors">
+                    {tool.name}
+                  </h3>
+                  <div className="text-xs text-golden-honey font-semibold mb-2">{tool.category}</div>
+                  <p className="text-sm text-white/70 mb-4">{tool.description}</p>
+                  
+                  <div className="flex items-center gap-1 text-xs font-semibold text-golden-honey">
+                    <Star className="w-3 h-3 fill-current" />
+                    +5 Honey
+                  </div>
                 </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
-                  {tool.name}
-                </h3>
-                <div className="text-xs text-primary-600 font-semibold mb-2">{tool.category}</div>
-                <p className="text-sm text-gray-600 mb-4">{tool.description}</p>
-                
-                <div className="flex items-center gap-1 text-xs font-semibold text-primary-700">
-                  <Star className="w-3 h-3 fill-current" />
-                  +5 Honey
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </main>
       </PageTransition>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-50 shadow-lg">
+      <nav className="fixed bottom-0 left-0 right-0 bg-deep-indigo border-t border-deep-indigo-light/20 px-2 py-2 z-50 shadow-lg backdrop-blur-sm bg-deep-indigo/95">
         <div className="max-w-7xl mx-auto flex items-center justify-around">
           <Link 
             href="/dashboard" 
             className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
               pathname === '/dashboard' 
-                ? 'text-primary-600 bg-primary-50' 
-                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+                ? 'text-golden-honey bg-golden-honey/10' 
+                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
             }`}
           >
             <Home className="w-6 h-6" strokeWidth={pathname === '/dashboard' ? 2.5 : 2} />
@@ -107,8 +119,8 @@ export default function ToolsPage() {
             href="/tools" 
             className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
               pathname === '/tools' 
-                ? 'text-primary-600 bg-primary-50' 
-                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+                ? 'text-golden-honey bg-golden-honey/10' 
+                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
             }`}
           >
             <Wrench className="w-6 h-6" strokeWidth={pathname === '/tools' ? 2.5 : 2} />
@@ -118,8 +130,8 @@ export default function ToolsPage() {
             href="/learn" 
             className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
               pathname === '/learn' 
-                ? 'text-primary-600 bg-primary-50' 
-                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+                ? 'text-golden-honey bg-golden-honey/10' 
+                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
             }`}
           >
             <GraduationCap className="w-6 h-6" strokeWidth={pathname === '/learn' ? 2.5 : 2} />
@@ -129,8 +141,8 @@ export default function ToolsPage() {
             href="/games" 
             className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
               pathname === '/games' 
-                ? 'text-primary-600 bg-primary-50' 
-                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+                ? 'text-golden-honey bg-golden-honey/10' 
+                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
             }`}
           >
             <Gamepad2 className="w-6 h-6" strokeWidth={pathname === '/games' ? 2.5 : 2} />
@@ -140,8 +152,8 @@ export default function ToolsPage() {
             href="/marketplace" 
             className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
               pathname === '/marketplace' 
-                ? 'text-primary-600 bg-primary-50' 
-                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+                ? 'text-golden-honey bg-golden-honey/10' 
+                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
             }`}
           >
             <ShoppingBag className="w-6 h-6" strokeWidth={pathname === '/marketplace' ? 2.5 : 2} />
