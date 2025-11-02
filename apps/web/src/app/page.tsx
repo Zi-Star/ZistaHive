@@ -2,7 +2,13 @@
 
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
-import { Download, QrCode, Calculator, Lock, FileText, Palette, RefreshCw, Image, Code2, Hash, Smartphone, Zap, Users, Trophy, TrendingUp, Star, Play, BookOpen, Gamepad2, ShoppingBag, ArrowRight, CheckCircle } from 'lucide-react'
+import { 
+  Download, QrCode, Calculator, Lock, FileText, Palette, RefreshCw, Image as ImageIcon, 
+  Code2, Hash, Smartphone, Zap, Users, Trophy, TrendingUp, Star, Play, BookOpen, 
+  Gamepad2, ShoppingBag, ArrowRight, CheckCircle, Youtube, Instagram, Twitter, 
+  Music, Scissors, FileImage, FileSpreadsheet, Percent, Clock, Globe, 
+  Medal, Crown, Flame, Award, ShoppingCart, Gift, Heart, MessageCircle
+} from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ImageComponent from 'next/image'
@@ -14,33 +20,64 @@ export default function Home() {
     setIsVisible(true)
   }, [])
 
-  const features = [
-    { icon: Download, title: 'Media Downloader', description: 'Download videos & audio from YouTube', color: 'from-red-500 to-pink-500' },
-    { icon: QrCode, title: 'QR Generator', description: 'Create custom QR codes instantly', color: 'from-blue-500 to-cyan-500' },
-    { icon: Calculator, title: 'Calculator', description: 'Advanced calculator with history', color: 'from-green-500 to-emerald-500' },
-    { icon: Lock, title: 'Password Gen', description: 'Generate secure passwords', color: 'from-purple-500 to-violet-500' },
-    { icon: RefreshCw, title: 'Unit Converter', description: 'Convert units & measurements', color: 'from-orange-500 to-amber-500' },
-    { icon: Image, title: 'Image Tools', description: 'Compress & optimize images', color: 'from-indigo-500 to-blue-500' },
-    { icon: FileText, title: 'PDF Tools', description: 'Merge, split & convert PDFs', color: 'from-teal-500 to-cyan-500' },
-    { icon: Palette, title: 'Color Picker', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500' },
+  // Tools data
+  const tools = [
+    { icon: Download, name: 'YouTube Downloader', category: 'Downloads', description: 'Download videos and audio', color: 'from-red-500 to-pink-500', honey: 10 },
+    { icon: Instagram, name: 'Instagram Downloader', category: 'Downloads', description: 'Save Instagram media', color: 'from-purple-500 to-pink-500', honey: 10 },
+    { icon: ImageIcon, name: 'Image Compressor', category: 'Image', description: 'Reduce image file size', color: 'from-indigo-500 to-blue-500', honey: 5 },
+    { icon: QrCode, name: 'QR Generator', category: 'Security', description: 'Create custom QR codes', color: 'from-blue-500 to-cyan-500', honey: 5 },
+    { icon: Calculator, name: 'Calculator', category: 'Calculator', description: 'Advanced calculator', color: 'from-green-500 to-emerald-500', honey: 0 },
+    { icon: Lock, name: 'Password Generator', category: 'Security', description: 'Generate secure passwords', color: 'from-purple-500 to-violet-500', honey: 0 },
+    { icon: FileText, name: 'PDF Tools', category: 'Document', description: 'Merge, split PDFs', color: 'from-teal-500 to-cyan-500', honey: 5 },
+    { icon: Palette, name: 'Color Picker', category: 'Developer', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
   ]
 
-  const valueProps = [
-    { 
-      icon: Zap, 
-      title: 'All-in-One Convenience', 
-      description: 'Stop juggling 10+ apps. Get everything you need in one seamless experience.' 
-    },
-    { 
-      icon: Trophy, 
-      title: 'Get Rewarded', 
-      description: 'Earn Honey for being productive. Spend it on premium features and exclusive content.' 
-    },
-    { 
-      icon: Users, 
-      title: 'Built for Kenyan Youth', 
-      description: 'Designed specifically for the needs and aspirations of young Kenyans.' 
-    }
+  // Courses data
+  const courses = [
+    { title: 'Web Development Basics', instructor: 'Ziramzis', lessons: 12, duration: '2h 30m', level: 'Beginner', honey: 100 },
+    { title: 'Digital Marketing Mastery', instructor: 'Marketing Pro', lessons: 18, duration: '4h 15m', level: 'Intermediate', honey: 150 },
+    { title: 'Financial Literacy', instructor: 'Finance Expert', lessons: 10, duration: '1h 45m', level: 'Beginner', honey: 75 },
+    { title: 'Graphic Design Fundamentals', instructor: 'Design Guru', lessons: 15, duration: '3h 20m', level: 'Beginner', honey: 125 },
+  ]
+
+  // Games data
+  const games = [
+    { name: 'Chess Master', type: 'Strategy', players: '1v1', honey: '10-100', icon: Gamepad2 },
+    { name: 'Brain Teasers', type: 'Puzzle', players: 'Solo', honey: '5-25', icon: Trophy },
+    { name: 'Trivia Challenge', type: 'Quiz', players: 'Multiplayer', honey: '10-50', icon: Medal },
+    { name: 'Math Wizard', type: 'Educational', players: 'Solo', honey: '5-30', icon: Calculator },
+  ]
+
+  // Marketplace products
+  const products = [
+    { name: 'Wireless Earbuds', price: 'KSh 2,500', category: 'Tech', rating: 4.8 },
+    { name: 'Designer T-Shirt', price: 'KSh 1,200', category: 'Fashion', rating: 4.6 },
+    { name: 'Smart Watch', price: 'KSh 8,000', category: 'Tech', rating: 4.9 },
+    { name: 'Notebook Set', price: 'KSh 800', category: 'Stationery', rating: 4.7 },
+  ]
+
+  // Services
+  const services = [
+    { name: 'Social Media Management', provider: 'Zista Pro', price: 'From KSh 5,000', category: 'Marketing' },
+    { name: 'Website Development', provider: 'Zista Devs', price: 'From KSh 15,000', category: 'Tech' },
+    { name: 'Graphic Design', provider: 'Creative Hive', price: 'From KSh 3,000', category: 'Design' },
+    { name: 'Content Writing', provider: 'Word Masters', price: 'From KSh 2,000', category: 'Writing' },
+  ]
+
+  // Stats data
+  const stats = [
+    { value: '20+', label: 'Productivity Tools', icon: Wrench },
+    { value: '100%', label: 'Free to Start', icon: Heart },
+    { value: '24/7', label: 'Available', icon: Clock },
+    { value: '10K+', label: 'Active Users', icon: Users },
+  ]
+
+  // Honey rewards
+  const honeyRewards = [
+    { action: 'Daily Login', reward: '5-50', icon: Flame },
+    { action: 'Use Tools', reward: '5-10', icon: Zap },
+    { action: 'Complete Courses', reward: '100-250', icon: BookOpen },
+    { action: 'Win Games', reward: '10-100', icon: Trophy },
   ]
 
   return (
@@ -191,132 +228,359 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Value Propositions */}
-        <section className="py-20 bg-gradient-to-b from-deep-indigo-dark to-deep-indigo">
+        {/* Stats Section */}
+        <section className="py-16 bg-gradient-to-b from-deep-indigo-dark to-deep-indigo">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Zista is Different</h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto">We didn&apos;t just build another productivity app. We created a complete ecosystem for Kenyan youth.</p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {valueProps.map((prop, index) => (
-                <div 
-                  key={index}
-                  className={`group bg-deep-indigo/50 backdrop-blur-sm rounded-2xl p-8 border border-deep-indigo-light/20 hover:border-golden-honey/30 transition-all duration-500 hover:-translate-y-2 ${index === 1 ? 'relative overflow-hidden' : ''}`}
-                >
-                  {index === 1 && (
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-golden-honey/5 rounded-full -translate-y-16 translate-x-16"></div>
-                  )}
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${index === 0 ? 'from-red-500/20 to-pink-500/20' : index === 1 ? 'from-golden-honey/20 to-yellow-500/20' : 'from-blue-500/20 to-cyan-500/20'} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <prop.icon className={`w-8 h-8 ${index === 0 ? 'text-red-400' : index === 1 ? 'text-golden-honey' : 'text-blue-400'}`} />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {stats.map((stat, index) => (
+                <div key={index} className="bg-deep-indigo/50 backdrop-blur-sm rounded-2xl p-6 border border-deep-indigo-light/20 text-center">
+                  <div className="inline-flex p-3 bg-golden-honey/10 rounded-xl mb-4">
+                    <stat.icon className="w-8 h-8 text-golden-honey" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{prop.title}</h3>
-                  <p className="text-white/70">{prop.description}</p>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-golden-honey to-golden-honey-light bg-clip-text text-transparent mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-white/70 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Features Grid - App-like Module Cards */}
+        {/* Tools Section */}
         <section className="py-20 bg-deep-indigo">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-4">Powerful Tools at Your Fingertips</h2>
-              <p className="text-xl text-white/70">Everything you need for daily productivity</p>
+              <div className="inline-flex items-center gap-2 bg-golden-honey/10 px-4 py-2 rounded-full border border-golden-honey/30 mb-4">
+                <Wrench className="w-5 h-5 text-golden-honey" />
+                <span className="text-golden-honey font-semibold">20+ Powerful Tools</span>
+              </div>
+              <h2 className="text-4xl font-bold text-white mb-4">Daily Productivity Supercharged</h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                Stop juggling multiple apps. Get everything you need in one seamless experience.
+              </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {features.map((feature, index) => (
-                <Link href="/tools" key={index}>
-                  <div className="group relative bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden">
-                    {/* Gradient Background on Hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity`}></div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-12">
+              {tools.map((tool, index) => (
+                <div 
+                  key={index}
+                  className="group relative bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden"
+                >
+                  {/* Gradient Background on Hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-10 transition-opacity`}></div>
+                  
+                  <div className="relative">
+                    {/* Icon */}
+                    <div className={`mb-4 inline-flex p-3 bg-gradient-to-br ${tool.color} rounded-xl shadow-lg`}>
+                      <tool.icon className="w-6 h-6 text-white" />
+                    </div>
                     
-                    <div className="relative">
-                      {/* Icon */}
-                      <div className={`mb-4 inline-flex p-3 bg-gradient-to-br ${feature.color} rounded-xl shadow-lg`}>
-                        <feature.icon className="w-6 h-6 text-white" />
-                      </div>
-                      
-                      {/* Content */}
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-golden-honey transition-colors">
-                        {feature.title}
-                      </h3>
-                      <p className="text-sm text-white/60">{feature.description}</p>
-                      
-                      {/* Honey Badge */}
-                      <div className="mt-4 inline-flex items-center gap-1 px-3 py-1 bg-golden-honey/10 rounded-full text-xs font-semibold text-golden-honey border border-golden-honey/30">
-                        <Star className="w-3 h-3 fill-current" />
-                        +5 Honey
-                      </div>
+                    {/* Content */}
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-golden-honey transition-colors">
+                      {tool.name}
+                    </h3>
+                    <p className="text-sm text-white/60 mb-4">{tool.description}</p>
+                    
+                    {/* Category & Honey */}
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-semibold text-golden-honey bg-golden-honey/10 px-2 py-1 rounded">
+                        {tool.category}
+                      </span>
+                      {tool.honey > 0 ? (
+                        <div className="inline-flex items-center gap-1 px-2 py-1 bg-golden-honey/10 rounded-full text-xs font-semibold text-golden-honey border border-golden-honey/30">
+                          <Star className="w-3 h-3 fill-current" />
+                          +{tool.honey}
+                        </div>
+                      ) : (
+                        <div className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/10 rounded-full text-xs font-semibold text-green-400 border border-green-500/30">
+                          <CheckCircle className="w-3 h-3 fill-current" />
+                          FREE
+                        </div>
+                      )}
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
 
             {/* View All Tools */}
-            <div className="text-center mt-12">
+            <div className="text-center">
               <Link href="/tools">
-                <button className="px-6 py-3 bg-deep-indigo-light/20 hover:bg-deep-indigo-light/30 text-white font-semibold rounded-xl transition-all inline-flex items-center gap-2 border border-deep-indigo-light/20 hover:border-golden-honey/30">
-                  View All 20+ Tools
-                  <TrendingUp className="w-5 h-5" />
+                <button className="px-8 py-4 bg-gradient-to-r from-golden-honey to-golden-honey-dark hover:from-golden-honey-dark hover:to-golden-honey text-deep-indigo-dark font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto">
+                  <span>Explore All Tools</span>
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* Learn Section */}
         <section className="py-20 bg-deep-indigo-dark">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
-                <div className="text-5xl font-bold bg-gradient-to-r from-golden-honey to-golden-honey-light bg-clip-text text-transparent mb-2">20+</div>
-                <div className="text-white/70 font-medium">Productivity Tools</div>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-accent-cyan/10 px-4 py-2 rounded-full border border-accent-cyan/30 mb-4">
+                <BookOpen className="w-5 h-5 text-accent-cyan" />
+                <span className="text-accent-cyan font-semibold">18 Courses & Growing</span>
               </div>
-              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
-                <div className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-2">100%</div>
-                <div className="text-white/70 font-medium">Free to Start</div>
+              <h2 className="text-4xl font-bold text-white mb-4">Learn Skills That Matter</h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                Build real-world skills with bite-sized courses designed for busy Kenyan youth.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-12">
+              {courses.map((course, index) => (
+                <div 
+                  key={index}
+                  className="group bg-deep-indigo rounded-2xl overflow-hidden border border-deep-indigo-light/20 hover:border-accent-cyan/30 transition-all duration-300"
+                >
+                  <div className="h-40 bg-gradient-to-r from-accent-cyan/20 to-blue-500/20 flex items-center justify-center">
+                    <BookOpen className="w-16 h-16 text-accent-cyan/50" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-lg font-bold text-white group-hover:text-accent-cyan transition-colors">
+                        {course.title}
+                      </h3>
+                      <div className="inline-flex items-center gap-1 px-2 py-1 bg-golden-honey/10 rounded-full text-xs font-semibold text-golden-honey border border-golden-honey/30">
+                        <Star className="w-3 h-3 fill-current" />
+                        +{course.honey}
+                      </div>
+                    </div>
+                    <p className="text-sm text-white/60 mb-4">by {course.instructor}</p>
+                    
+                    <div className="flex justify-between text-xs text-white/50 mb-4">
+                      <span>{course.lessons} lessons</span>
+                      <span>{course.duration}</span>
+                      <span className="px-2 py-0.5 bg-white/10 rounded">{course.level}</span>
+                    </div>
+                    
+                    <button className="w-full py-2 bg-deep-indigo-light/20 hover:bg-deep-indigo-light/30 text-white font-medium rounded-lg transition-colors border border-deep-indigo-light/30 hover:border-accent-cyan/30">
+                      Preview Course
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* View All Courses */}
+            <div className="text-center">
+              <Link href="/learn">
+                <button className="px-8 py-4 bg-gradient-to-r from-accent-cyan to-blue-500 hover:from-accent-cyan-dark hover:to-blue-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto">
+                  <span>Browse Learning Hub</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Games Section */}
+        <section className="py-20 bg-deep-indigo">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/30 mb-4">
+                <Gamepad2 className="w-5 h-5 text-green-400" />
+                <span className="text-green-400 font-semibold">17 Skill-Based Games</span>
               </div>
-              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
-                <div className="text-5xl font-bold bg-gradient-to-r from-accent-cyan to-accent-cyan-light bg-clip-text text-transparent mb-2">24/7</div>
-                <div className="text-white/70 font-medium">Available</div>
+              <h2 className="text-4xl font-bold text-white mb-4">Play, Compete & Earn</h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                Sharpen your mind with skill-based games. Compete with friends and earn Honey rewards.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-12">
+              {games.map((game, index) => (
+                <div 
+                  key={index}
+                  className="group bg-deep-indigo-light/10 rounded-2xl p-6 border border-deep-indigo-light/20 hover:border-green-500/30 transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                      <game.icon className="w-6 h-6 text-green-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white">{game.name}</h3>
+                      <p className="text-sm text-white/60">{game.type}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xs font-medium text-white/50">Players: {game.players}</span>
+                    <div className="inline-flex items-center gap-1 px-2 py-1 bg-golden-honey/10 rounded-full text-xs font-semibold text-golden-honey border border-golden-honey/30">
+                      <Star className="w-3 h-3 fill-current" />
+                      {game.honey}
+                    </div>
+                  </div>
+                  
+                  <button className="w-full py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 font-medium rounded-lg transition-colors border border-green-500/30 hover:border-green-400/50">
+                    Play Now
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Tournaments CTA */}
+            <div className="max-w-4xl mx-auto bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-2xl p-8 border border-green-500/30 text-center">
+              <Trophy className="w-12 h-12 text-green-400 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2">Weekly Tournaments</h3>
+              <p className="text-white/80 mb-6">
+                Compete in Honey tournaments every week. Top players win big rewards!
+              </p>
+              <Link href="/games">
+                <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl">
+                  Join Tournament
+                </button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Marketplace Section */}
+        <section className="py-20 bg-deep-indigo-dark">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-purple-500/10 px-4 py-2 rounded-full border border-purple-500/30 mb-4">
+                <ShoppingCart className="w-5 h-5 text-purple-400" />
+                <span className="text-purple-400 font-semibold">23 Products & Services</span>
               </div>
+              <h2 className="text-4xl font-bold text-white mb-4">Shop Curated for Youth</h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                Discover products and services from local partners. Use Honey for discounts.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto mb-12">
+              {/* Products */}
+              <div className="bg-deep-indigo rounded-2xl p-6 border border-deep-indigo-light/20">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Gift className="w-6 h-6 text-purple-400" />
+                  Trending Products
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {products.map((product, index) => (
+                    <div 
+                      key={index}
+                      className="group bg-deep-indigo-light/10 rounded-xl p-4 border border-deep-indigo-light/20 hover:border-purple-500/30 transition-all"
+                    >
+                      <div className="flex gap-4">
+                        <div className="w-16 h-16 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                          <ShoppingBag className="w-8 h-8 text-purple-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-white group-hover:text-purple-400 transition-colors">
+                            {product.name}
+                          </h4>
+                          <p className="text-sm text-white/60 mb-1">{product.category}</p>
+                          <div className="flex justify-between items-center">
+                            <span className="font-bold text-golden-honey">{product.price}</span>
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                              <span className="text-xs text-white/70">{product.rating}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Services */}
+              <div className="bg-deep-indigo rounded-2xl p-6 border border-deep-indigo-light/20">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                  <MessageCircle className="w-6 h-6 text-purple-400" />
+                  Popular Services
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {services.map((service, index) => (
+                    <div 
+                      key={index}
+                      className="group bg-deep-indigo-light/10 rounded-xl p-4 border border-deep-indigo-light/20 hover:border-purple-500/30 transition-all"
+                    >
+                      <div className="flex gap-4">
+                        <div className="w-16 h-16 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                          <Zap className="w-8 h-8 text-purple-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-white group-hover:text-purple-400 transition-colors">
+                            {service.name}
+                          </h4>
+                          <p className="text-sm text-white/60 mb-1">{service.provider}</p>
+                          <div className="flex justify-between items-center">
+                            <span className="font-bold text-golden-honey">{service.price}</span>
+                            <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">
+                              {service.category}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* View Marketplace */}
+            <div className="text-center">
+              <Link href="/marketplace">
+                <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto">
+                  <span>Explore Marketplace</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </Link>
             </div>
           </div>
         </section>
 
         {/* Honey Economy CTA */}
-        <section className="py-20 bg-deep-indigo">
+        <section className="py-20 bg-gradient-to-r from-golden-honey/10 to-yellow-500/10">
           <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto bg-gradient-to-r from-golden-honey to-golden-honey-dark rounded-3xl p-12 text-center text-deep-indigo-dark shadow-2xl">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-deep-indigo-dark/10 rounded-2xl mb-6">
-                <Trophy className="w-8 h-8 text-deep-indigo-dark" />
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 bg-golden-honey/20 px-4 py-2 rounded-full border border-golden-honey/50 mb-4">
+                  <Crown className="w-5 h-5 text-golden-honey" />
+                  <span className="text-golden-honey font-semibold">Honey Reward System</span>
+                </div>
+                <h2 className="text-4xl font-bold text-white mb-4">Earn While You Work</h2>
+                <p className="text-xl text-white/80 max-w-3xl mx-auto">
+                  Collect Honey tokens for daily logins, completing tasks, and using tools. 
+                  Unlock premium features and exclusive content.
+                </p>
               </div>
-              <h2 className="text-4xl font-bold mb-4">Earn Rewards While You Work</h2>
-              <p className="text-xl mb-8 opacity-90">
-                Collect Honey tokens for daily logins, completing tasks, and using tools. 
-                Unlock premium features and exclusive content.
-              </p>
-              <div className="flex justify-center gap-6 flex-wrap">
-                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <Star className="w-8 h-8 mx-auto mb-2 fill-current text-deep-indigo-dark" />
-                  <div className="text-sm opacity-90">Daily Login</div>
-                  <div className="text-2xl font-bold">5-50</div>
-                </div>
-                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <Zap className="w-8 h-8 mx-auto mb-2 text-deep-indigo-dark" />
-                  <div className="text-sm opacity-90">Use Tools</div>
-                  <div className="text-2xl font-bold">5-10</div>
-                </div>
-                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <TrendingUp className="w-8 h-8 mx-auto mb-2 text-deep-indigo-dark" />
-                  <div className="text-sm opacity-90">Level Up</div>
-                  <div className="text-2xl font-bold">500</div>
-                </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {honeyRewards.map((reward, index) => (
+                  <div 
+                    key={index}
+                    className="bg-deep-indigo-dark rounded-2xl p-6 border border-deep-indigo-light/20 text-center group hover:border-golden-honey/30 transition-all"
+                  >
+                    <div className="w-16 h-16 rounded-2xl bg-golden-honey/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-golden-honey/20 transition-colors">
+                      <reward.icon className="w-8 h-8 text-golden-honey" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2">{reward.action}</h3>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-golden-honey to-yellow-500 bg-clip-text text-transparent">
+                      +{reward.reward}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="bg-gradient-to-r from-golden-honey to-golden-honey-dark rounded-2xl p-8 text-center text-deep-indigo-dark">
+                <Award className="w-12 h-12 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-2">Daily Earning Potential</h3>
+                <div className="text-4xl font-bold mb-4">95 🍯/day</div>
+                <p className="text-lg opacity-90 mb-6">
+                  That's <span className="font-bold">2,850 Honey/month</span> to spend on premium features!
+                </p>
+                <Link href="/signup">
+                  <button className="px-8 py-4 bg-deep-indigo-dark hover:bg-deep-indigo text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto">
+                    <span>Start Earning Today</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
