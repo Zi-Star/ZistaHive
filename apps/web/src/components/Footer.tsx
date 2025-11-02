@@ -4,60 +4,60 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
+    <footer className="bg-deep-indigo border-t border-deep-indigo-light/20 mt-auto">
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-2xl">
+              <div className="w-10 h-10 bg-golden-honey rounded-full flex items-center justify-center text-2xl">
                 🐝
               </div>
-              <span className="text-xl font-display font-bold">Zista</span>
+              <span className="text-xl font-display font-bold text-white">Zista</span>
             </div>
-            <p className="text-gray-600 text-sm">
+            <p className="text-white/60 text-sm">
               Your all-in-one productivity hive. Stay busy, stay smart.
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
+            <h3 className="font-semibold text-white mb-4">Product</h3>
             <ul className="space-y-2">
-              <li><Link href="/tools" className="text-gray-600 hover:text-primary-600 text-sm">Bee Tools</Link></li>
-              <li><Link href="/learn" className="text-gray-600 hover:text-primary-600 text-sm">Learning Hub</Link></li>
-              <li><Link href="/games" className="text-gray-600 hover:text-primary-600 text-sm">Games</Link></li>
-              <li><Link href="/marketplace" className="text-gray-600 hover:text-primary-600 text-sm">Marketplace</Link></li>
+              <li><Link href="/tools" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Bee Tools</Link></li>
+              <li><Link href="/learn" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Learning Hub</Link></li>
+              <li><Link href="/games" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Games</Link></li>
+              <li><Link href="/marketplace" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Marketplace</Link></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Company</h3>
+            <h3 className="font-semibold text-white mb-4">Company</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-gray-600 hover:text-primary-600 text-sm">About Us</Link></li>
-              <li><Link href="/blog" className="text-gray-600 hover:text-primary-600 text-sm">Blog</Link></li>
-              <li><Link href="/careers" className="text-gray-600 hover:text-primary-600 text-sm">Careers</Link></li>
-              <li><Link href="/contact" className="text-gray-600 hover:text-primary-600 text-sm">Contact</Link></li>
+              <li><Link href="/about" className="text-white/60 hover:text-golden-honey text-sm transition-colors">About Us</Link></li>
+              <li><Link href="/blog" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Blog</Link></li>
+              <li><Link href="/careers" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Careers</Link></li>
+              <li><Link href="/contact" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
+            <h3 className="font-semibold text-white mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li><Link href="/privacy" className="text-gray-600 hover:text-primary-600 text-sm">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-gray-600 hover:text-primary-600 text-sm">Terms of Service</Link></li>
-              <li><Link href="/cookies" className="text-gray-600 hover:text-primary-600 text-sm">Cookie Policy</Link></li>
+              <li><Link href="/privacy" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Terms of Service</Link></li>
+              <li><Link href="/cookies" className="text-white/60 hover:text-golden-honey text-sm transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600 text-sm">
-            Built with 💛 by <span className="font-semibold text-gray-900">Ziramzis</span> | Z-Star | Life in Motion
+        <div className="border-t border-deep-indigo-light/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/60 text-sm">
+            Built with 💛 by <span className="font-semibold text-golden-honey">Ziramzis</span> | Z-Star | Life in Motion
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-white/50 text-sm">
             © {currentYear} Zista. All rights reserved.
           </p>
         </div>

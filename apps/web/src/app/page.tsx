@@ -20,26 +20,26 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <main className="min-h-screen bg-deep-indigo-dark">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-secondary-100 to-primary-50 opacity-50"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-golden-honey/10 via-deep-indigo to-deep-indigo-dark opacity-50"></div>
           <div className="container mx-auto px-4 py-20 relative">
             <div className="max-w-4xl mx-auto text-center">
               {/* Logo Icon */}
-              <div className="mb-8 inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-2xl">
-                <Zap className="w-10 h-10 text-white" />
+              <div className="mb-8 inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-golden-honey to-golden-honey-dark rounded-2xl shadow-2xl">
+                <Zap className="w-10 h-10 text-deep-indigo-dark" />
               </div>
 
-              <h1 className="text-6xl md:text-7xl font-display font-black mb-6 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+              <h1 className="text-6xl md:text-7xl font-display font-black mb-6 bg-gradient-to-r from-golden-honey to-golden-honey-light bg-clip-text text-transparent">
                 Zista
               </h1>
 
-              <p className="text-2xl md:text-3xl text-gray-700 mb-4 font-semibold">
+              <p className="text-2xl md:text-3xl text-white mb-4 font-semibold">
                 Stay Busy. Stay Smart.
               </p>
 
-              <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
                 Your all-in-one productivity platform. 20+ powerful tools, learning resources, 
                 and rewards - all in one seamless experience.
               </p>
@@ -47,13 +47,13 @@ export default function Home() {
               {/* CTA Buttons */}
               <div className="flex gap-4 justify-center flex-wrap">
                 <Link href="/dashboard">
-                  <button className="group px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2">
+                  <button className="group px-8 py-4 bg-golden-honey hover:bg-golden-honey-dark text-deep-indigo-dark font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2">
                     <Smartphone className="w-5 h-5" />
                     Get Started Free
                   </button>
                 </Link>
                 <Link href="/tools">
-                  <button className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 font-semibold rounded-xl transition-all border-2 border-gray-200 hover:border-primary-500 flex items-center gap-2">
+                  <button className="px-8 py-4 bg-deep-indigo hover:bg-deep-indigo-light text-white font-semibold rounded-xl transition-all border-2 border-deep-indigo-light/30 hover:border-golden-honey/50 flex items-center gap-2">
                     Explore Tools
                     <Code2 className="w-5 h-5" />
                   </button>
@@ -64,17 +64,17 @@ export default function Home() {
         </section>
 
         {/* Features Grid - App-like Module Cards */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-deep-indigo">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Tools at Your Fingertips</h2>
-              <p className="text-xl text-gray-600">Everything you need for daily productivity</p>
+              <h2 className="text-4xl font-bold text-white mb-4">Powerful Tools at Your Fingertips</h2>
+              <p className="text-xl text-white/70">Everything you need for daily productivity</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {features.map((feature, index) => (
                 <Link href="/tools" key={index}>
-                  <div className="group relative bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden">
+                  <div className="group relative bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden">
                     {/* Gradient Background on Hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity`}></div>
                     
@@ -85,13 +85,13 @@ export default function Home() {
                       </div>
                       
                       {/* Content */}
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-golden-honey transition-colors">
                         {feature.title}
                       </h3>
-                      <p className="text-sm text-gray-600">{feature.description}</p>
+                      <p className="text-sm text-white/60">{feature.description}</p>
                       
                       {/* Honey Badge */}
-                      <div className="mt-4 inline-flex items-center gap-1 px-3 py-1 bg-primary-100 rounded-full text-xs font-semibold text-primary-700">
+                      <div className="mt-4 inline-flex items-center gap-1 px-3 py-1 bg-golden-honey/10 rounded-full text-xs font-semibold text-golden-honey border border-golden-honey/30">
                         <Star className="w-3 h-3 fill-current" />
                         +5 Honey
                       </div>
@@ -104,7 +104,7 @@ export default function Home() {
             {/* View All Tools */}
             <div className="text-center mt-12">
               <Link href="/tools">
-                <button className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-xl transition-all inline-flex items-center gap-2">
+                <button className="px-6 py-3 bg-deep-indigo-light/20 hover:bg-deep-indigo-light/30 text-white font-semibold rounded-xl transition-all inline-flex items-center gap-2 border border-deep-indigo-light/20 hover:border-golden-honey/30">
                   View All 20+ Tools
                   <TrendingUp className="w-5 h-5" />
                 </button>
@@ -114,31 +114,31 @@ export default function Home() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <section className="py-20 bg-deep-indigo-dark">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl p-8 text-center shadow-lg">
-                <div className="text-5xl font-bold bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent mb-2">20+</div>
-                <div className="text-gray-600 font-medium">Productivity Tools</div>
+              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
+                <div className="text-5xl font-bold bg-gradient-to-r from-golden-honey to-golden-honey-light bg-clip-text text-transparent mb-2">20+</div>
+                <div className="text-white/70 font-medium">Productivity Tools</div>
               </div>
-              <div className="bg-white rounded-2xl p-8 text-center shadow-lg">
-                <div className="text-5xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent mb-2">100%</div>
-                <div className="text-gray-600 font-medium">Free to Start</div>
+              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
+                <div className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-2">100%</div>
+                <div className="text-white/70 font-medium">Free to Start</div>
               </div>
-              <div className="bg-white rounded-2xl p-8 text-center shadow-lg">
-                <div className="text-5xl font-bold bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent mb-2">24/7</div>
-                <div className="text-gray-600 font-medium">Available</div>
+              <div className="bg-deep-indigo rounded-2xl p-8 text-center shadow-lg border border-deep-indigo-light/20">
+                <div className="text-5xl font-bold bg-gradient-to-r from-accent-cyan to-accent-cyan-light bg-clip-text text-transparent mb-2">24/7</div>
+                <div className="text-white/70 font-medium">Available</div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Honey Economy CTA */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-deep-indigo">
           <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl p-12 text-center text-white shadow-2xl">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-6">
-                <Trophy className="w-8 h-8" />
+            <div className="max-w-5xl mx-auto bg-gradient-to-r from-golden-honey to-golden-honey-dark rounded-3xl p-12 text-center text-deep-indigo-dark shadow-2xl">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-deep-indigo-dark/10 rounded-2xl mb-6">
+                <Trophy className="w-8 h-8 text-deep-indigo-dark" />
               </div>
               <h2 className="text-4xl font-bold mb-4">Earn Rewards While You Work</h2>
               <p className="text-xl mb-8 opacity-90">
@@ -146,18 +146,18 @@ export default function Home() {
                 Unlock premium features and exclusive content.
               </p>
               <div className="flex justify-center gap-6 flex-wrap">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <Star className="w-8 h-8 mx-auto mb-2 fill-current" />
+                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
+                  <Star className="w-8 h-8 mx-auto mb-2 fill-current text-deep-indigo-dark" />
                   <div className="text-sm opacity-90">Daily Login</div>
                   <div className="text-2xl font-bold">5-50</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <Zap className="w-8 h-8 mx-auto mb-2" />
+                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
+                  <Zap className="w-8 h-8 mx-auto mb-2 text-deep-indigo-dark" />
                   <div className="text-sm opacity-90">Use Tools</div>
                   <div className="text-2xl font-bold">5-10</div>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
-                  <TrendingUp className="w-8 h-8 mx-auto mb-2" />
+                <div className="bg-deep-indigo-dark/10 backdrop-blur-sm rounded-xl p-6 min-w-[150px]">
+                  <TrendingUp className="w-8 h-8 mx-auto mb-2 text-deep-indigo-dark" />
                   <div className="text-sm opacity-90">Level Up</div>
                   <div className="text-2xl font-bold">500</div>
                 </div>
