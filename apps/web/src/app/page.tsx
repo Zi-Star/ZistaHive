@@ -127,7 +127,7 @@ export default function Home() {
                         <div className="pt-16 p-6 h-full flex flex-col">
                           <div className="text-center mb-6">
                             <div className="inline-flex items-center gap-2 bg-golden-honey/10 px-3 py-1 rounded-full border border-golden-honey/30">
-                              <span className="text-2xl">🍯</span>
+                              <span className="text-2xl">&#127853;</span>
                               <span className="text-golden-honey font-bold">125</span>
                             </div>
                           </div>
@@ -158,7 +158,7 @@ export default function Home() {
                         
                         {/* Floating Elements */}
                         <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-golden-honey/20 backdrop-blur-sm border border-golden-honey/30 flex items-center justify-center animate-pulse">
-                          <span className="text-2xl">🍯</span>
+                          <span className="text-2xl">&#127853;</span>
                         </div>
                         <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-accent-cyan/20 backdrop-blur-sm border border-accent-cyan/30 flex items-center justify-center animate-pulse delay-300">
                           <Zap className="w-5 h-5 text-accent-cyan" />
@@ -167,10 +167,10 @@ export default function Home() {
                       
                       {/* Floating Honey Elements */}
                       <div className="absolute -top-8 -left-8 w-20 h-20 rounded-full bg-golden-honey/10 backdrop-blur-sm border border-golden-honey/20 flex items-center justify-center animate-bounce">
-                        <span className="text-3xl">🍯</span>
+                        <span className="text-3xl">&#127853;</span>
                       </div>
                       <div className="absolute -bottom-8 -right-8 w-16 h-16 rounded-full bg-golden-honey/10 backdrop-blur-sm border border-golden-honey/20 flex items-center justify-center animate-bounce delay-500">
-                        <span className="text-2xl">🍯</span>
+                        <span className="text-2xl">&#127853;</span>
                       </div>
                     </div>
                   </div>
@@ -196,7 +196,7 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Zista is Different</h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto">We didn't just build another productivity app. We created a complete ecosystem for Kenyan youth.</p>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">We didn&apos;t just build another productivity app. We created a complete ecosystem for Kenyan youth.</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">

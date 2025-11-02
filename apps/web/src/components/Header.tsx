@@ -56,7 +56,13 @@ export function Header({ user }: HeaderProps) {
                 <Link href="/profile">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-golden-honey to-golden-honey-dark flex items-center justify-center font-bold text-deep-indigo-dark cursor-pointer hover:scale-105 transition-transform shadow-md">
                     {user.avatar ? (
-                      <img src={user.avatar} alt={user.name} className="w-full h-full rounded-xl object-cover" />
+                      <Image 
+                        src={user.avatar} 
+                        alt={user.name} 
+                        width={40} 
+                        height={40} 
+                        className="w-full h-full rounded-xl object-cover" 
+                      />
                     ) : (
                       <User className="w-5 h-5" />
                     )}
