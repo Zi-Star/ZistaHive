@@ -17,6 +17,8 @@
 
 **Design Goal:** Make productivity feel rewarding, not boring.
 
+**Visual Theme:** Dark theme using Deep Indigo background with Golden Honey accents, creating a modern, focused environment similar to daily.dev but with Zista's unique identity.
+
 ---
 
 ## 🎨 COLOR SYSTEM
@@ -45,10 +47,11 @@
 ```
 
 **Usage Guidelines:**
-- **Golden Honey:** Buttons, badges, highlights, Honey currency
-- **Deep Indigo:** Headers, important text, nav elements
-- **Soft White:** Backgrounds, cards, containers
-- **Accent Cyan:** Links, info messages, progress indicators
+- **Golden Honey:** Primary accent - buttons, badges, highlights, Honey currency, active states
+- **Deep Indigo:** Main background (dark theme), cards, containers
+- **Deep Indigo Dark (#1E1B4D):** Page background, darkest surfaces
+- **Soft White:** Text color on dark backgrounds, secondary elements
+- **Accent Cyan:** Links, info messages, progress indicators, secondary accents
 
 ---
 
@@ -105,7 +108,7 @@
 ### **Tailwind Config**
 
 ```javascript
-// tailwind.config.js
+// tailwind.config.js - Updated for Dark Theme
 module.exports = {
   theme: {
     extend: {
@@ -170,9 +173,14 @@ module.exports = {
 
 ### **Component Spacing Guidelines**
 
+**Dark Theme Considerations:**
+- Use larger padding on dark backgrounds for better visual comfort
+- Increase spacing between interactive elements for clarity
+
 **Cards:**
-- Padding: `p-6` (24px) on desktop, `p-4` (16px) on mobile
+- Padding: `p-6` (24px) on desktop, `p-5` (20px) on mobile
 - Gap between cards: `gap-6` (24px)
+- Background: `bg-deep-indigo` with `border-deep-indigo-light/20`
 
 **Buttons:**
 - Padding: `px-4 py-2` (16px horizontal, 8px vertical)
@@ -466,28 +474,30 @@ border-radius: 9999px;
 
 ### **Buttons**
 
-**Primary Button:**
+**Primary Button (Golden Honey):**
 ```tsx
 <button className="
   px-4 py-2
   bg-golden-honey hover:bg-golden-honey-dark
-  text-deep-indigo font-medium
+  text-deep-indigo-dark font-medium
   rounded-lg
-  transition-colors duration-200
+  transition-all duration-200
+  hover:scale-105
   disabled:opacity-50 disabled:cursor-not-allowed
 ">
   Primary Action
 </button>
 ```
 
-**Secondary Button:**
+**Secondary Button (Deep Indigo):**
 ```tsx
 <button className="
   px-4 py-2
   bg-deep-indigo hover:bg-deep-indigo-light
   text-white font-medium
+  border border-deep-indigo-light/20
   rounded-lg
-  transition-colors duration-200
+  transition-all duration-200
 ">
   Secondary Action
 </button>
@@ -497,9 +507,10 @@ border-radius: 9999px;
 ```tsx
 <button className="
   px-4 py-2
-  text-gray-700 hover:bg-gray-100
+  text-white/70 hover:text-golden-honey
+  hover:bg-deep-indigo-light/20
   font-medium rounded-lg
-  transition-colors duration-200
+  transition-all duration-200
 ">
   Ghost Action
 </button>
@@ -509,29 +520,47 @@ border-radius: 9999px;
 
 ### **Cards**
 
-**Standard Card:**
+**Standard Card (Dark Theme):**
 ```tsx
 <div className="
-  bg-white
-  border border-gray-200
+  bg-deep-indigo
+  border border-deep-indigo-light/20
   rounded-lg
-  shadow-sm hover:shadow-md
+  shadow-md hover:shadow-lg
+  hover:border-golden-honey/30
   p-6
-  transition-shadow duration-200
+  transition-all duration-200
 ">
   {/* Card content */}
 </div>
 ```
 
-**Highlighted Card (Honey feature):**
+**Highlighted Card (Honey Feature):**
 ```tsx
 <div className="
-  bg-golden-honey/10
+  bg-gradient-to-br from-golden-honey to-golden-honey-dark
+  text-deep-indigo-dark
   border-2 border-golden-honey
   rounded-lg
   p-6
+  shadow-lg
 ">
   {/* Featured content */}
+</div>
+```
+
+**Subtle Card (Semi-transparent):**
+```tsx
+<div className="
+  bg-deep-indigo-light/10
+  border border-deep-indigo-light/10
+  rounded-lg
+  backdrop-blur-sm
+  p-5
+  hover:bg-deep-indigo-light/20
+  transition-all duration-200
+">
+  {/* Subtle content */}
 </div>
 ```
 
