@@ -8,42 +8,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Z-Star Brand Colors
+        // Zista Brand Colors - Official Design System
+        'golden-honey': {
+          DEFAULT: '#F9C74F',
+          light: '#FFDAA3',
+          dark: '#E5B03B',
+        },
+        'deep-indigo': {
+          DEFAULT: '#312E81',
+          light: '#4C4799',
+          dark: '#1E1B4D',
+        },
+        'soft-white': {
+          DEFAULT: '#F5F5F7',
+          dark: '#E8E8EA',
+        },
+        'accent-cyan': {
+          DEFAULT: '#3ABFF8',
+          light: '#7DD3FC',
+          dark: '#0EA5E9',
+        },
+        // Legacy support (map to new colors)
         primary: {
-          50: '#FFF9E6',
-          100: '#FFF3CC',
-          200: '#FFE799',
-          300: '#FFDB66',
-          400: '#FFCF33',
-          500: '#FFC300', // Main Yellow (Honey)
-          600: '#CC9C00',
-          700: '#997500',
-          800: '#664E00',
-          900: '#332700',
-        },
-        secondary: {
-          50: '#F5F3FF',
-          100: '#EDE9FE',
-          200: '#DDD6FE',
-          300: '#C4B5FD',
-          400: '#A78BFA',
-          500: '#8B5CF6', // Purple accent
-          600: '#7C3AED',
-          700: '#6D28D9',
-          800: '#5B21B6',
-          900: '#4C1D95',
-        },
-        dark: {
-          50: '#F7F7F7',
-          100: '#E3E3E3',
-          200: '#C8C8C8',
-          300: '#A4A4A4',
-          400: '#818181',
-          500: '#666666',
-          600: '#515151',
-          700: '#434343',
-          800: '#383838',
-          900: '#1A1A1A', // Main dark
+          50: '#FFDAA3',
+          100: '#FFDAA3',
+          200: '#F9C74F',
+          300: '#F9C74F',
+          400: '#F9C74F',
+          500: '#F9C74F',
+          600: '#E5B03B',
+          700: '#E5B03B',
+          800: '#E5B03B',
+          900: '#E5B03B',
         },
       },
       fontFamily: {

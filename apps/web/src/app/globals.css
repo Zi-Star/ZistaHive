@@ -2,30 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Zista Design System Colors */
+  --golden-honey: #F9C74F;
+  --golden-honey-light: #FFDAA3;
+  --golden-honey-dark: #E5B03B;
+  
+  --deep-indigo: #312E81;
+  --deep-indigo-light: #4C4799;
+  --deep-indigo-dark: #1E1B4D;
+  
+  --soft-white: #F5F5F7;
+  --soft-white-dark: #E8E8EA;
+  
+  --accent-cyan: #3ABFF8;
+  --accent-cyan-light: #7DD3FC;
+  --accent-cyan-dark: #0EA5E9;
+}
+
 @layer base {
   * {
-    @apply border-gray-200;
+    @apply border-deep-indigo/10;
   }
 
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-deep-indigo-dark text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
-      @apply bg-gray-900 text-gray-100;
-    }
   }
 }
 
 @layer components {
-  /* Bee-themed gradients */
+  /* Zista themed components */
   .honey-gradient {
-    @apply bg-gradient-to-br from-primary-50 via-white to-secondary-50;
+    @apply bg-gradient-to-br from-golden-honey-light via-golden-honey to-golden-honey-dark;
   }
   
   .hive-card {
-    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-200;
+    @apply bg-deep-indigo rounded-xl shadow-md hover:shadow-lg transition-all border border-deep-indigo-light/20 hover:border-golden-honey/30;
+  }
+  
+  .dark-card {
+    @apply bg-deep-indigo/50 backdrop-blur-sm rounded-xl border border-deep-indigo-light/20;
   }
 }
