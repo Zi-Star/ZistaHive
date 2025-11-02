@@ -128,108 +128,119 @@ export default function Dashboard() {
             <p className="text-white/70">Here&apos;s what&apos;s happening in your hive today</p>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-golden-honey to-golden-honey-dark text-deep-indigo p-5 rounded-2xl shadow-lg border border-golden-honey/20">
-              <div className="text-sm opacity-90 mb-1 font-medium">Daily Streak</div>
-              <div className="flex items-baseline gap-2">
-                <div className="text-3xl font-bold">{user.streak}</div>
-                <Flame className="w-5 h-5" />
+          {/* Stats - Simplified & Balanced */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6">
+            <div className="bg-gradient-to-br from-golden-honey to-golden-honey-dark text-deep-indigo p-4 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs opacity-80 font-medium mb-1">Streak</div>
+                  <div className="text-2xl font-bold">{user.streak}</div>
+                </div>
+                <Flame className="w-8 h-8 opacity-80" />
               </div>
             </div>
-            <div className="bg-deep-indigo p-5 rounded-2xl shadow border border-deep-indigo-light/20">
-              <div className="text-sm text-white/70 mb-1 font-medium">Bee Rank</div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-golden-honey" />
-                <div className="text-lg font-bold text-white">{user.beeRank}</div>
+            <div className="bg-deep-indigo/50 backdrop-blur-sm border border-deep-indigo-light/20 p-4 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-white/60 font-medium mb-1">Rank</div>
+                  <div className="text-sm font-bold text-white">{user.beeRank}</div>
+                </div>
+                <Trophy className="w-7 h-7 text-golden-honey" />
               </div>
             </div>
-            <div className="bg-deep-indigo p-5 rounded-2xl shadow border border-deep-indigo-light/20">
-              <div className="text-sm text-white/70 mb-1 font-medium">Tools Used</div>
-              <div className="flex items-baseline gap-2">
-                <div className="text-3xl font-bold text-accent-cyan">12</div>
-                <TrendingUp className="w-5 h-5 text-accent-cyan" />
+            <div className="bg-deep-indigo/50 backdrop-blur-sm border border-deep-indigo-light/20 p-4 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-white/60 font-medium mb-1">Tools</div>
+                  <div className="text-2xl font-bold text-accent-cyan">12</div>
+                </div>
+                <TrendingUp className="w-7 h-7 text-accent-cyan" />
               </div>
             </div>
-            <div className="bg-deep-indigo p-5 rounded-2xl shadow border border-deep-indigo-light/20">
-              <div className="text-sm text-white/70 mb-1 font-medium">Earned Today</div>
-              <div className="text-2xl font-bold text-green-400">+85</div>
+            <div className="bg-deep-indigo/50 backdrop-blur-sm border border-deep-indigo-light/20 p-4 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-white/60 font-medium mb-1">Today</div>
+                  <div className="text-2xl font-bold text-green-400">+85</div>
+                </div>
+                <Star className="w-7 h-7 text-green-400" />
+              </div>
             </div>
           </div>
 
-          {/* Quick Tools */}
-          <div className="bg-deep-indigo rounded-2xl shadow border border-deep-indigo-light/20 p-5 mb-6">
+          {/* Quick Tools - Cleaner Grid */}
+          <div className="bg-deep-indigo/30 backdrop-blur-sm border border-deep-indigo-light/10 rounded-xl p-4 lg:p-5 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white">Quick Access</h2>
+              <h2 className="text-lg lg:text-xl font-bold text-white">Quick Access</h2>
               <Link href="/tools" className="text-sm text-golden-honey hover:text-golden-honey-light font-medium transition-colors">
-                View All
+                View All →
               </Link>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 lg:gap-3">
               {quickTools.map((tool, i) => (
-                <button key={i} className="group flex flex-col items-center p-4 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl hover:border-golden-honey/50 hover:bg-deep-indigo-light/20 transition-all">
-                  <div className={`w-12 h-12 mb-2 bg-gradient-to-br ${tool.color} rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
-                    <tool.icon className="w-6 h-6 text-white" />
+                <button key={i} className="group flex flex-col items-center p-3 bg-deep-indigo/40 border border-deep-indigo-light/20 rounded-lg hover:border-golden-honey/50 hover:bg-deep-indigo-light/30 transition-all">
+                  <div className={`w-10 h-10 lg:w-12 lg:h-12 mb-2 bg-gradient-to-br ${tool.color} rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform`}>
+                    <tool.icon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
                   </div>
-                  <div className="text-xs font-semibold text-white text-center leading-tight mb-1">{tool.name}</div>
+                  <div className="text-[10px] lg:text-xs font-semibold text-white text-center leading-tight">{tool.name}</div>
                   {tool.honey > 0 && (
-                    <div className="text-[10px] text-golden-honey font-bold">{tool.honey} 🍯</div>
+                    <div className="text-[9px] lg:text-[10px] text-golden-honey font-medium mt-1">{tool.honey} 🍯</div>
                   )}
                 </button>
               ))}
               <Link href="/tools">
-                <button className="group flex flex-col items-center p-4 border-2 border-dashed border-deep-indigo-light/30 rounded-xl hover:border-golden-honey/50 hover:bg-deep-indigo-light/10 transition-all w-full">
-                  <div className="w-12 h-12 mb-2 bg-deep-indigo-light/20 rounded-xl flex items-center justify-center group-hover:bg-golden-honey/10 transition-colors">
-                    <Plus className="w-6 h-6 text-white/50 group-hover:text-golden-honey" />
+                <button className="group flex flex-col items-center p-3 border border-dashed border-deep-indigo-light/30 rounded-lg hover:border-golden-honey/50 hover:bg-deep-indigo/40 transition-all w-full h-full">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 mb-2 flex items-center justify-center">
+                    <Plus className="w-5 h-5 lg:w-6 lg:h-6 text-white/50 group-hover:text-golden-honey transition-colors" />
                   </div>
-                  <div className="text-xs font-semibold text-white/50 group-hover:text-golden-honey text-center leading-tight">All Tools</div>
+                  <div className="text-[10px] lg:text-xs font-semibold text-white/50 group-hover:text-golden-honey text-center leading-tight">More</div>
                 </button>
               </Link>
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 bg-deep-indigo rounded-2xl shadow border border-deep-indigo-light/20 p-5">
-              <h2 className="text-xl font-bold text-white mb-4">Recent Activity</h2>
-              <div className="space-y-3">
+          <div className="grid lg:grid-cols-3 gap-4 lg:gap-6">
+            <div className="lg:col-span-2 bg-deep-indigo/30 backdrop-blur-sm border border-deep-indigo-light/10 rounded-xl p-4 lg:p-5">
+              <h2 className="text-lg lg:text-xl font-bold text-white mb-3 lg:mb-4">Recent Activity</h2>
+              <div className="space-y-2 lg:space-y-3">
                 {[
                   { action: 'Daily Login Reward', time: '2 hours ago', honey: 25 },
                   { action: 'Used YouTube Downloader', time: '5 hours ago', honey: 10 },
                   { action: 'Completed Course Module', time: 'Yesterday', honey: 50 },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 p-4 bg-deep-indigo-light/10 rounded-xl border border-deep-indigo-light/10 hover:border-golden-honey/30 transition-colors">
-                    <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
-                      <Star className="w-5 h-5 text-green-400 fill-green-400" />
+                  <div key={i} className="flex items-center gap-3 p-3 bg-deep-indigo/40 rounded-lg border border-deep-indigo-light/10 hover:border-golden-honey/30 transition-colors">
+                    <div className="w-9 h-9 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Star className="w-4 h-4 text-green-400 fill-green-400" />
                     </div>
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm text-white">{item.action}</div>
-                      <div className="text-xs text-white/60">{item.time}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm text-white truncate">{item.action}</div>
+                      <div className="text-xs text-white/50">{item.time}</div>
                     </div>
-                    <div className="text-golden-honey font-bold">+{item.honey}</div>
+                    <div className="text-golden-honey font-bold text-sm">+{item.honey}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-deep-indigo rounded-2xl shadow border border-deep-indigo-light/20 p-5">
-              <h2 className="text-xl font-bold text-white mb-4">Daily Missions</h2>
-              <div className="space-y-4">
+            <div className="bg-deep-indigo/30 backdrop-blur-sm border border-deep-indigo-light/10 rounded-xl p-4 lg:p-5">
+              <h2 className="text-lg lg:text-xl font-bold text-white mb-3 lg:mb-4">Daily Missions</h2>
+              <div className="space-y-3 lg:space-y-4">
                 <div>
-                  <div className="flex justify-between mb-2">
+                  <div className="flex justify-between mb-1.5">
                     <span className="text-sm font-medium text-white">Daily Login</span>
                     <span className="text-sm text-green-400 font-bold">✓</span>
                   </div>
-                  <div className="w-full bg-deep-indigo-light/20 rounded-full h-2">
-                    <div className="bg-green-400 h-2 rounded-full" style={{width: '100%'}}></div>
+                  <div className="w-full bg-deep-indigo-light/20 rounded-full h-1.5">
+                    <div className="bg-green-400 h-1.5 rounded-full transition-all" style={{width: '100%'}}></div>
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between mb-2">
+                  <div className="flex justify-between mb-1.5">
                     <span className="text-sm font-medium text-white">Use 3 Tools</span>
                     <span className="text-sm text-golden-honey font-bold">2/3</span>
                   </div>
-                  <div className="w-full bg-deep-indigo-light/20 rounded-full h-2">
-                    <div className="bg-golden-honey h-2 rounded-full" style={{width: '66%'}}></div>
+                  <div className="w-full bg-deep-indigo-light/20 rounded-full h-1.5">
+                    <div className="bg-golden-honey h-1.5 rounded-full transition-all" style={{width: '66%'}}></div>
                   </div>
                 </div>
               </div>
