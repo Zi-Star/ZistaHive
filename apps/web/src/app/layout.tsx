@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
+import Head from 'next/head'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -37,6 +38,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/Logo.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/Logo.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/Logo.png" />
+      </head>
       <body className="font-sans antialiased">
         {children}
       </body>
