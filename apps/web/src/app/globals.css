@@ -44,4 +44,14 @@
   .dark-card {
     @apply bg-deep-indigo/50 backdrop-blur-sm rounded-xl border border-deep-indigo-light/20;
   }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
