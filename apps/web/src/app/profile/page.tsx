@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Star, Trophy, Flame, TrendingUp, Settings, Bell, LogOut, Camera, Edit2, Save, X } from 'lucide-react'
 import Link from 'next/link'
@@ -28,13 +28,7 @@ export default function ProfilePage() {
   })
   const [transactions, setTransactions] = useState<any[]>([])
 
-  useEffect(() => {
-    setMounted(true)
-    fetchUserData()
-    fetchTransactions()
-  }, []) // Remove authUser from dependency array
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     if (!authUser) return
 
     try {
@@ -46,9 +40,9 @@ export default function ProfilePage() {
     } catch (error) {
       console.error('Failed to fetch user:', error)
     }
-  }
+  }, [authUser])
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
       const response = await fetch('/api/honey/transactions')
       if (response.ok) {
@@ -58,7 +52,13 @@ export default function ProfilePage() {
     } catch (error) {
       console.error('Failed to fetch transactions:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    setMounted(true)
+    fetchUserData()
+    fetchTransactions()
+  }, [fetchUserData, fetchTransactions])
 
   const handleSignOut = async () => {
     try {

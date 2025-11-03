@@ -3,17 +3,11 @@ import { prisma } from '@zistahive/database'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth-config'
 
-// Helper function to get current user
-async function getCurrentUser() {
-  const session = await getServerSession(authOptions)
-  return session?.user
-}
-
 export async function POST(request: Request) {
   try {
-    const user = await getCurrentUser()
+    const session = await getServerSession(authOptions)
     
-    if (!user?.email) {
+    if (!session?.user?.email) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -38,7 +32,7 @@ export async function POST(request: Request) {
 
     // Get user's honey balance
     const userWithBalance = await prisma.user.findUnique({
-      where: { email: user.email },
+      where: { email: session.user.email },
       include: {
         honeyBalance: true,
       },
