@@ -39,36 +39,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     setMounted(true)
-    fetchUserData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const fetchUserData = async () => {
-    if (!authUser) {
-      setLoading(false)
-      return
-    }
-
-    try {
-      const response = await fetch('/api/user/me')
-      if (response.ok) {
-        const data = await response.json()
-        setUser(data)
-        // Also update honey balance in the hook
-        // fetchHoneyBalance()
-      } else {
-        console.error('API Error:', response.status, response.statusText)
-        // If unauthorized, redirect to login
-        if (response.status === 401) {
-          router.push('/login')
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch user data:', error)
-    } finally {
+    // The user data is now provided by the useAuth hook
+    if (authUser) {
+      setUser({
+        name: authUser.name || 'Loading...',
+        email: authUser.email || '',
+        honeyBalance: authUser.honeyBalance || 0,
+        beeRank: authUser.beeRank || 'Worker Bee',
+        streak: authUser.streak || 0,
+        avatar: authUser.avatar || null
+      })
       setLoading(false)
     }
-  }
+  }, [authUser])
 
   const handleClaimDailyReward = async () => {
     setClaiming(true)
@@ -88,8 +71,6 @@ export default function Dashboard() {
           message = 'Successfully claimed Honey!'
         }
         setClaimMessage(message)
-        // Refresh user data to get updated balance
-        fetchUserData()
       } else {
         // Handle the case where result has error property
         const error = 'error' in result ? result.error : 'Failed to claim daily reward'
@@ -153,7 +134,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-2 bg-golden-honey/10 px-3 py-2 rounded-xl border border-golden-honey/30">
               <div className="text-2xl">🍯</div>
               <div>
-                <div className="text-sm font-bold text-golden-honey">{honeyBalance || user.honeyBalance || 0}</div>
+                <div className="text-sm font-bold text-golden-honey">{honeyBalance || 0}</div>
                 <div className="text-xs text-golden-honey/70 hidden sm:block">Honey</div>
               </div>
             </div>
@@ -191,7 +172,7 @@ export default function Dashboard() {
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                   <h2 className="text-lg font-bold">Daily Honey Reward</h2>
-                  <p className="text-sm opacity-90">Claim your daily {5 + Math.min((streak || user.streak || 0) * 5, 45)} 🍯 bonus</p>
+                  <p className="text-sm opacity-90">Claim your daily {5 + Math.min((streak || 0) * 5, 45)} 🍯 bonus</p>
                 </div>
                 <button
                   onClick={handleClaimDailyReward}
@@ -214,7 +195,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-xs opacity-80 font-medium mb-1">Streak</div>
-                    <div className="text-2xl font-bold">{streak || user.streak || 0}</div>
+                    <div className="text-2xl font-bold">{streak || 0}</div>
                   </div>
                   <Flame className="w-8 h-8 opacity-80" />
                 </div>

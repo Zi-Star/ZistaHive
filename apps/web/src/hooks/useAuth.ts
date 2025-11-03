@@ -121,34 +121,21 @@ export function useRequireAuth(redirectUrl = '/login') {
 
 // Honey management hook
 export function useHoney() {
+  const { user, isAuthenticated, isLoading } = useAuth()
   const [honeyBalance, setHoneyBalance] = useState<number>(0)
   const [streak, setStreak] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const isClient = typeof window !== 'undefined'
 
-  // Fetch current honey balance
-  const fetchHoneyBalance = async () => {
-    // Only run on client side
-    if (!isClient) return
-    
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const response = await fetch('/api/user/me')
-      if (response.ok) {
-        const userData = await response.json()
-        setHoneyBalance(userData.honeyBalance || 0)
-        setStreak(userData.streak || 0)
-      }
-    } catch (err) {
-      setError('Failed to fetch honey balance')
-      console.error('Fetch honey balance error:', err)
-    } finally {
+  // Initialize honey balance from user data
+  useEffect(() => {
+    if (user && !isLoading) {
+      setHoneyBalance(user.honeyBalance || 0)
+      setStreak(user.streak || 0)
       setLoading(false)
     }
-  }
+  }, [user, isLoading])
 
   // Claim daily reward
   const claimDailyReward = async () => {
@@ -245,7 +232,6 @@ export function useHoney() {
       streak: 0,
       loading: true,
       error: null,
-      fetchHoneyBalance: async () => {},
       claimDailyReward: async () => ({ success: false, error: 'Not available on server' }),
       spendHoney: async () => ({ success: false, error: 'Not available on server' }),
     }
@@ -257,7 +243,6 @@ export function useHoney() {
     streak,
     loading,
     error,
-    fetchHoneyBalance,
     claimDailyReward,
     spendHoney,
   }
