@@ -13,29 +13,34 @@ interface User {
 
 export function useAuth() {
   const router = useRouter()
-  const [session, setSession] = useState<any>(null)
-  const [status, setStatus] = useState<string>('loading')
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [clientSession, setClientSession] = useState<any>(null)
+  const [clientStatus, setClientStatus] = useState<string>('loading')
 
-  const isAuthenticated = status === 'authenticated'
-  const isLoading = status === 'loading'
+  // Call useSession at the top level (this is allowed)
+  const { data: session, status } = useSession()
+
+  // Determine if we're on the client or server
+  const isClient = typeof window !== 'undefined'
+
+  useEffect(() => {
+    // Update client-side state when session changes
+    if (isClient) {
+      setClientSession(session)
+      setClientStatus(status)
+    }
+  }, [session, status, isClient])
 
   useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') {
-      setStatus('unauthenticated')
+    if (!isClient) {
       setLoading(false)
       return
     }
 
-    // Get session data from next-auth
-    const { data, status: sessionStatus } = useSession()
-    setSession(data)
-    setStatus(sessionStatus)
-
     const fetchUser = async () => {
-      if (sessionStatus === 'authenticated') {
+      if (status === 'authenticated') {
         try {
           const response = await fetch('/api/user/me')
           if (response.ok) {
@@ -50,11 +55,11 @@ export function useAuth() {
     }
 
     fetchUser()
-  }, [])
+  }, [status, isClient])
 
   const logout = async () => {
     // Only run on client side
-    if (typeof window === 'undefined') return
+    if (!isClient) return
     
     await fetch('/api/auth/logout', { method: 'POST' })
     router.push('/login')
@@ -62,7 +67,7 @@ export function useAuth() {
   }
 
   // Return appropriate values based on whether we're on the client or server
-  if (typeof window === 'undefined') {
+  if (!isClient) {
     // Server-side rendering - return safe defaults
     return {
       user: null,
@@ -76,9 +81,9 @@ export function useAuth() {
   // Client-side - return actual values
   return {
     user,
-    session,
-    isAuthenticated,
-    isLoading: isLoading || loading,
+    session: clientSession,
+    isAuthenticated: clientStatus === 'authenticated',
+    isLoading: clientStatus === 'loading' || loading,
     logout,
   }
 }
@@ -86,17 +91,18 @@ export function useAuth() {
 export function useRequireAuth(redirectUrl = '/login') {
   const router = useRouter()
   const { isAuthenticated, isLoading } = useAuth()
+  const isClient = typeof window !== 'undefined'
 
   useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') return
+    if (!isClient) return
     
     if (!isLoading && !isAuthenticated) {
       router.push(redirectUrl)
     }
-  }, [isAuthenticated, isLoading, router, redirectUrl])
+  }, [isAuthenticated, isLoading, router, redirectUrl, isClient])
 
-  if (typeof window === 'undefined') {
+  if (!isClient) {
     // Server-side rendering - return safe defaults
     return { isAuthenticated: false, isLoading: true }
   }
@@ -111,11 +117,12 @@ export function useHoney() {
   const [streak, setStreak] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+  const isClient = typeof window !== 'undefined'
 
   // Fetch current honey balance
   const fetchHoneyBalance = async () => {
     // Only run on client side
-    if (typeof window === 'undefined') return
+    if (!isClient) return
     
     try {
       setLoading(true)
@@ -138,7 +145,7 @@ export function useHoney() {
   // Claim daily reward
   const claimDailyReward = async () => {
     // Only run on client side
-    if (typeof window === 'undefined') return { success: false, error: 'Not available on server' }
+    if (!isClient) return { success: false, error: 'Not available on server' }
     
     try {
       setLoading(true)
@@ -182,7 +189,7 @@ export function useHoney() {
   // Spend honey
   const spendHoney = async (amount: number, purpose: string) => {
     // Only run on client side
-    if (typeof window === 'undefined') return { success: false, error: 'Not available on server' }
+    if (!isClient) return { success: false, error: 'Not available on server' }
     
     try {
       setLoading(true)
@@ -223,7 +230,7 @@ export function useHoney() {
     }
   }
 
-  if (typeof window === 'undefined') {
+  if (!isClient) {
     // Server-side rendering - return safe defaults
     return {
       honeyBalance: 0,
