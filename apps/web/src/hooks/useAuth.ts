@@ -13,7 +13,9 @@ interface User {
 
 export function useAuth() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  // Handle server-side rendering case
+  const sessionResult = typeof window === 'undefined' ? { data: null, status: 'loading' } : useSession()
+  const { data: session, status } = sessionResult
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
