@@ -24,11 +24,11 @@ export function useAuth(): {
   const [clientSession, setClientSession] = useState<any>(null)
   const [clientStatus, setClientStatus] = useState<string>('loading')
 
-  // Always call useSession - this is required by React Hooks rules
-  const { data: session, status } = useSession()
-
   // Determine if we're on the client or server
   const isClient = typeof window !== 'undefined'
+
+  // Only call useSession on the client side
+  const { data: session, status } = isClient ? useSession() : { data: null, status: 'loading' }
 
   useEffect(() => {
     // Update client-side state when session changes
