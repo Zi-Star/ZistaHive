@@ -13,7 +13,8 @@ interface User {
 
 export function useAuth() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const [session, setSession] = useState<any>(null)
+  const [status, setStatus] = useState<string>('loading')
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -23,12 +24,18 @@ export function useAuth() {
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') {
+      setStatus('unauthenticated')
       setLoading(false)
       return
     }
 
+    // Get session data from next-auth
+    const { data, status: sessionStatus } = useSession()
+    setSession(data)
+    setStatus(sessionStatus)
+
     const fetchUser = async () => {
-      if (isAuthenticated) {
+      if (sessionStatus === 'authenticated') {
         try {
           const response = await fetch('/api/user/me')
           if (response.ok) {
@@ -43,7 +50,7 @@ export function useAuth() {
     }
 
     fetchUser()
-  }, [isAuthenticated])
+  }, [])
 
   const logout = async () => {
     // Only run on client side
