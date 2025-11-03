@@ -35,8 +35,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [claiming, setClaiming] = useState(false)
   const [claimMessage, setClaimMessage] = useState('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     fetchUserData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -104,6 +106,18 @@ export default function Dashboard() {
     { icon: Lock, name: 'Password', color: 'from-purple-500 to-violet-500', honey: 5 },
     { icon: RefreshCw, name: 'Converter', color: 'from-orange-500 to-amber-500', honey: 0 },
   ]
+
+  // Don't render anything during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-golden-honey border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/70">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <ProtectedRoute>
