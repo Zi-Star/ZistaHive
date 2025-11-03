@@ -20,13 +20,13 @@ export function useAuth() {
   const isAuthenticated = status === 'authenticated'
   const isLoading = status === 'loading'
 
-  // Handle server-side rendering case by checking if we're on the client
-  const isClient = typeof window !== 'undefined'
-  
   useEffect(() => {
     // Only run on client side
-    if (!isClient) return
-    
+    if (typeof window === 'undefined') {
+      setLoading(false)
+      return
+    }
+
     const fetchUser = async () => {
       if (isAuthenticated) {
         try {
@@ -43,11 +43,11 @@ export function useAuth() {
     }
 
     fetchUser()
-  }, [isAuthenticated, isClient])
+  }, [isAuthenticated])
 
   const logout = async () => {
     // Only run on client side
-    if (!isClient) return
+    if (typeof window === 'undefined') return
     
     await fetch('/api/auth/logout', { method: 'POST' })
     router.push('/login')
@@ -55,11 +55,23 @@ export function useAuth() {
   }
 
   // Return appropriate values based on whether we're on the client or server
+  if (typeof window === 'undefined') {
+    // Server-side rendering - return safe defaults
+    return {
+      user: null,
+      session: null,
+      isAuthenticated: false,
+      isLoading: true,
+      logout,
+    }
+  }
+
+  // Client-side - return actual values
   return {
-    user: isClient ? user : null,
-    session: isClient ? session : null,
-    isAuthenticated: isClient ? isAuthenticated : false,
-    isLoading: isClient ? (isLoading || loading) : true,
+    user,
+    session,
+    isAuthenticated,
+    isLoading: isLoading || loading,
     logout,
   }
 }
@@ -67,18 +79,23 @@ export function useAuth() {
 export function useRequireAuth(redirectUrl = '/login') {
   const router = useRouter()
   const { isAuthenticated, isLoading } = useAuth()
-  const isClient = typeof window !== 'undefined'
 
   useEffect(() => {
     // Only run on client side
-    if (!isClient) return
+    if (typeof window === 'undefined') return
     
     if (!isLoading && !isAuthenticated) {
       router.push(redirectUrl)
     }
-  }, [isAuthenticated, isLoading, router, redirectUrl, isClient])
+  }, [isAuthenticated, isLoading, router, redirectUrl])
 
-  return { isAuthenticated: isClient ? isAuthenticated : false, isLoading: isClient ? isLoading : true }
+  if (typeof window === 'undefined') {
+    // Server-side rendering - return safe defaults
+    return { isAuthenticated: false, isLoading: true }
+  }
+
+  // Client-side - return actual values
+  return { isAuthenticated, isLoading }
 }
 
 // Honey management hook
@@ -87,12 +104,11 @@ export function useHoney() {
   const [streak, setStreak] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const isClient = typeof window !== 'undefined'
 
   // Fetch current honey balance
   const fetchHoneyBalance = async () => {
     // Only run on client side
-    if (!isClient) return
+    if (typeof window === 'undefined') return
     
     try {
       setLoading(true)
@@ -115,7 +131,7 @@ export function useHoney() {
   // Claim daily reward
   const claimDailyReward = async () => {
     // Only run on client side
-    if (!isClient) return { success: false, error: 'Not available on server' }
+    if (typeof window === 'undefined') return { success: false, error: 'Not available on server' }
     
     try {
       setLoading(true)
@@ -159,7 +175,7 @@ export function useHoney() {
   // Spend honey
   const spendHoney = async (amount: number, purpose: string) => {
     // Only run on client side
-    if (!isClient) return { success: false, error: 'Not available on server' }
+    if (typeof window === 'undefined') return { success: false, error: 'Not available on server' }
     
     try {
       setLoading(true)
@@ -200,6 +216,20 @@ export function useHoney() {
     }
   }
 
+  if (typeof window === 'undefined') {
+    // Server-side rendering - return safe defaults
+    return {
+      honeyBalance: 0,
+      streak: 0,
+      loading: true,
+      error: null,
+      fetchHoneyBalance: async () => {},
+      claimDailyReward: async () => ({ success: false, error: 'Not available on server' }),
+      spendHoney: async () => ({ success: false, error: 'Not available on server' }),
+    }
+  }
+
+  // Client-side - return actual values
   return {
     honeyBalance,
     streak,
