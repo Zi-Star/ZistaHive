@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useAuth, useHoney } from '@/hooks/useAuth'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 interface UserData {
   name: string
@@ -36,6 +35,12 @@ export default function Dashboard() {
   const [claimMessage, setClaimMessage] = useState('')
 
   useEffect(() => {
+    // Redirect to login if not authenticated
+    if (!isAuthenticated && !authLoading) {
+      router.push('/login')
+      return
+    }
+    
     // Update user data when authUser changes
     if (authUser) {
       setUser({
@@ -47,7 +52,7 @@ export default function Dashboard() {
         avatar: authUser.avatar || null
       })
     }
-  }, [authUser])
+  }, [authUser, isAuthenticated, authLoading, router])
 
   const handleClaimDailyReward = async () => {
     setClaiming(true)
@@ -89,14 +94,6 @@ export default function Dashboard() {
     }
   }
 
-  const quickTools = [
-    { icon: Download, name: 'Downloader', color: 'from-red-500 to-pink-500', honey: 10 },
-    { icon: QrCode, name: 'QR Code', color: 'from-blue-500 to-cyan-500', honey: 5 },
-    { icon: Calculator, name: 'Calculator', color: 'from-green-500 to-emerald-500', honey: 0 },
-    { icon: Lock, name: 'Password', color: 'from-purple-500 to-violet-500', honey: 5 },
-    { icon: RefreshCw, name: 'Converter', color: 'from-orange-500 to-amber-500', honey: 0 },
-  ]
-
   // Show loading state while authenticating
   if (authLoading) {
     return (
@@ -114,6 +111,14 @@ export default function Dashboard() {
     router.push('/login')
     return null
   }
+
+  const quickTools = [
+    { icon: Download, name: 'Downloader', color: 'from-red-500 to-pink-500', honey: 10 },
+    { icon: QrCode, name: 'QR Code', color: 'from-blue-500 to-cyan-500', honey: 5 },
+    { icon: Calculator, name: 'Calculator', color: 'from-green-500 to-emerald-500', honey: 0 },
+    { icon: Lock, name: 'Password', color: 'from-purple-500 to-violet-500', honey: 5 },
+    { icon: RefreshCw, name: 'Converter', color: 'from-orange-500 to-amber-500', honey: 0 },
+  ]
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">

@@ -21,8 +21,16 @@ export function useAuth() {
   // Determine if we're on the client or server
   const isClient = typeof window !== 'undefined'
 
-  // Always call useSession, but handle the server-side case
-  const sessionResult = useSession()
+  // Handle server-side rendering case
+  let sessionResult
+  if (isClient) {
+    // Only call useSession on client side
+    sessionResult = useSession()
+  } else {
+    // Server-side fallback
+    sessionResult = { data: null, status: 'loading' }
+  }
+  
   const { data: session, status } = sessionResult
 
   useEffect(() => {
