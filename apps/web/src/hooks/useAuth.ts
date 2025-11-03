@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -21,16 +21,9 @@ export function useAuth() {
   // Determine if we're on the client or server
   const isClient = typeof window !== 'undefined'
 
-  // Always call useSession, but handle the server-side case
-  const sessionResult = useSession()
-  
-  // Use useMemo to avoid conditional hook calls
-  const { data: session, status } = useMemo(() => {
-    if (!isClient) {
-      return { data: null, status: 'loading' }
-    }
-    return sessionResult
-  }, [sessionResult, isClient])
+  // Get session data - only call useSession on client side
+  const sessionResult = isClient ? useSession() : { data: null, status: 'loading' }
+  const { data: session, status } = sessionResult
 
   useEffect(() => {
     // Update client-side state when session changes
