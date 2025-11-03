@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -11,26 +11,37 @@ interface User {
   streak: number
 }
 
+// Create a safe wrapper for useSession that handles server-side rendering
+const useSafeSession = () => {
+  const [sessionData, setSessionData] = useState<any>(null)
+  const [sessionStatus, setSessionStatus] = useState<string>('loading')
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Only call useSession on the client side
+  const sessionResult = isClient ? useSession() : { data: null, status: 'loading' }
+
+  useEffect(() => {
+    if (isClient) {
+      setSessionData(sessionResult.data)
+      setSessionStatus(sessionResult.status)
+    }
+  }, [sessionResult, isClient])
+
+  return { data: sessionData, status: sessionStatus, isClient }
+}
+
 export function useAuth() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [clientSession, setClientSession] = useState<any>(null)
-  const [clientStatus, setClientStatus] = useState<string>('loading')
+  const { data: session, status, isClient } = useSafeSession()
 
-  // Call useSession at the top level (this is allowed)
-  const { data: session, status } = useSession()
-
-  // Determine if we're on the client or server
-  const isClient = typeof window !== 'undefined'
-
-  useEffect(() => {
-    // Update client-side state when session changes
-    if (isClient) {
-      setClientSession(session)
-      setClientStatus(status)
-    }
-  }, [session, status, isClient])
+  const isAuthenticated = status === 'authenticated'
+  const isLoading = status === 'loading'
 
   useEffect(() => {
     // Only run on client side
@@ -81,9 +92,9 @@ export function useAuth() {
   // Client-side - return actual values
   return {
     user,
-    session: clientSession,
-    isAuthenticated: clientStatus === 'authenticated',
-    isLoading: clientStatus === 'loading' || loading,
+    session,
+    isAuthenticated,
+    isLoading: isLoading || loading,
     logout,
   }
 }
