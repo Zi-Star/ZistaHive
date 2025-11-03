@@ -7,7 +7,8 @@ import {
   Code2, Hash, Smartphone, Zap, Users, Trophy, TrendingUp, Star, Play, BookOpen, 
   Gamepad2, ShoppingBag, ArrowRight, CheckCircle, Youtube, Instagram, Twitter, 
   Music, Scissors, FileImage, FileSpreadsheet, Percent, Clock, Globe, 
-  Medal, Crown, Flame, Award, ShoppingCart, Gift, Heart, MessageCircle
+  Medal, Crown, Flame, Award, ShoppingCart, Gift, Heart, MessageCircle,
+  Wrench as WrenchIcon
 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -29,7 +30,7 @@ export default function Home() {
     { icon: Calculator, name: 'Calculator', category: 'Calculator', description: 'Advanced calculator', color: 'from-green-500 to-emerald-500', honey: 0 },
     { icon: Lock, name: 'Password Generator', category: 'Security', description: 'Generate secure passwords', color: 'from-purple-500 to-violet-500', honey: 0 },
     { icon: FileText, name: 'PDF Tools', category: 'Document', description: 'Merge, split PDFs', color: 'from-teal-500 to-cyan-500', honey: 5 },
-    { icon: Palette, name: 'Color Picker', category: 'Developer', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
+    { icon: Palette, name: 'Color Picker', category: 'Developer', description: 'Pick &amp; convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
   ]
 
   // Courses data
@@ -66,7 +67,7 @@ export default function Home() {
 
   // Stats data
   const stats = [
-    { value: '20+', label: 'Productivity Tools', icon: Wrench },
+    { value: '20+', label: 'Productivity Tools', icon: WrenchIcon },
     { value: '100%', label: 'Free to Start', icon: Heart },
     { value: '24/7', label: 'Available', icon: Clock },
     { value: '10K+', label: 'Active Users', icon: Users },
@@ -111,7 +112,7 @@ export default function Home() {
                     </p>
                     
                     <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
-                      Your all-in-one productivity hive for tools, learning, games & rewards. 
+                      Your all-in-one productivity hive for tools, learning, games &amp; rewards. 
                       Join thousands of Kenyan youth transforming their daily hustle into productive mastery.
                     </p>
                     
@@ -252,7 +253,7 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-golden-honey/10 px-4 py-2 rounded-full border border-golden-honey/30 mb-4">
-                <Wrench className="w-5 h-5 text-golden-honey" />
+                <WrenchIcon className="w-5 h-5 text-golden-honey" />
                 <span className="text-golden-honey font-semibold">20+ Powerful Tools</span>
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">Daily Productivity Supercharged</h2>
@@ -322,7 +323,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-accent-cyan/10 px-4 py-2 rounded-full border border-accent-cyan/30 mb-4">
                 <BookOpen className="w-5 h-5 text-accent-cyan" />
-                <span className="text-accent-cyan font-semibold">18 Courses & Growing</span>
+                <span className="text-accent-cyan font-semibold">18 Courses &amp; Growing</span>
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">Learn Skills That Matter</h2>
               <p className="text-xl text-white/70 max-w-3xl mx-auto">
@@ -385,7 +386,7 @@ export default function Home() {
                 <Gamepad2 className="w-5 h-5 text-green-400" />
                 <span className="text-green-400 font-semibold">17 Skill-Based Games</span>
               </div>
-              <h2 className="text-4xl font-bold text-white mb-4">Play, Compete & Earn</h2>
+              <h2 className="text-4xl font-bold text-white mb-4">Play, Compete &amp; Earn</h2>
               <p className="text-xl text-white/70 max-w-3xl mx-auto">
                 Sharpen your mind with skill-based games. Compete with friends and earn Honey rewards.
               </p>
@@ -444,7 +445,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-purple-500/10 px-4 py-2 rounded-full border border-purple-500/30 mb-4">
                 <ShoppingCart className="w-5 h-5 text-purple-400" />
-                <span className="text-purple-400 font-semibold">23 Products & Services</span>
+                <span className="text-purple-400 font-semibold">23 Products &amp; Services</span>
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">Shop Curated for Youth</h2>
               <p className="text-xl text-white/70 max-w-3xl mx-auto">
@@ -571,9 +572,9 @@ export default function Home() {
               <div className="bg-gradient-to-r from-golden-honey to-golden-honey-dark rounded-2xl p-8 text-center text-deep-indigo-dark">
                 <Award className="w-12 h-12 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold mb-2">Daily Earning Potential</h3>
-                <div className="text-4xl font-bold mb-4">95 🍯/day</div>
+                <div className="text-4xl font-bold mb-4">95 &#127853;/day</div>
                 <p className="text-lg opacity-90 mb-6">
-                  That's <span className="font-bold">2,850 Honey/month</span> to spend on premium features!
+                  That&apos;s <span className="font-bold">2,850 Honey/month</span> to spend on premium features!
                 </p>
                 <Link href="/signup">
                   <button className="px-8 py-4 bg-deep-indigo-dark hover:bg-deep-indigo text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto">

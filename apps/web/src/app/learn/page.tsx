@@ -2,7 +2,7 @@
 
 import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Search, BookOpen, Code, Briefcase, Lightbulb, Trophy, Clock, Star, Bell, Play, CheckCircle, Lock } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { PageTransition } from '../../components/PageTransition'
 import Image from 'next/image'
@@ -30,7 +30,7 @@ export default function LearnPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('All')
   const pathname = usePathname()
 
-  const courses: Course[] = [
+  const courses: Course[] = useMemo(() => [
     // Digital Skills
     { id: 1, title: 'Web Development Basics', description: 'Learn HTML, CSS & JavaScript fundamentals', category: 'Digital Skills', difficulty: 'Beginner', duration: '4 hours', lessons: 12, honey: 150, progress: 0, icon: Code, color: 'from-blue-500 to-cyan-500' },
     { id: 2, title: 'Graphic Design with Canva', description: 'Create stunning designs for social media', category: 'Digital Skills', difficulty: 'Beginner', duration: '3 hours', lessons: 10, honey: 100, icon: Lightbulb, color: 'from-purple-500 to-pink-500' },
@@ -56,15 +56,15 @@ export default function LearnPage() {
     { id: 16, title: 'The 7 Habits Summary', description: 'Effectiveness principles for success', category: 'Book Summaries', difficulty: 'Beginner', duration: '40 min', lessons: 1, honey: 50, icon: BookOpen, color: 'from-indigo-500 to-purple-500' },
     { id: 17, title: 'Think and Grow Rich Summary', description: 'Napoleon Hill\'s success philosophy', category: 'Book Summaries', difficulty: 'Beginner', duration: '35 min', lessons: 1, honey: 50, icon: BookOpen, color: 'from-yellow-500 to-orange-500' },
     { id: 18, title: 'How to Win Friends Summary', description: 'Dale Carnegie\'s influence tactics', category: 'Book Summaries', difficulty: 'Beginner', duration: '30 min', lessons: 1, honey: 50, icon: BookOpen, color: 'from-pink-500 to-rose-500' },
-  ]
+  ], [])
 
-  const categories: { id: Category; label: string; icon: any }[] = [
+  const categories: { id: Category; label: string; icon: any }[] = useMemo(() => [
     { id: 'All', label: 'All Courses', icon: GraduationCap },
     { id: 'Digital Skills', label: 'Digital Skills', icon: Code },
     { id: 'Life Skills', label: 'Life Skills', icon: Trophy },
     { id: 'Money Making', label: 'Money Making', icon: Briefcase },
     { id: 'Book Summaries', label: 'Book Summaries', icon: BookOpen },
-  ]
+  ], [])
 
   const filteredCourses = useMemo(() => {
     return courses.filter(course => {
@@ -74,6 +74,10 @@ export default function LearnPage() {
       return matchesSearch && matchesCategory
     })
   }, [searchQuery, activeCategory, courses])
+
+  const handleCategoryChange = useCallback((category: Category) => {
+    setActiveCategory(category)
+  }, [])
 
   const getDifficultyColor = (difficulty: Difficulty) => {
     switch (difficulty) {
@@ -154,7 +158,7 @@ export default function LearnPage() {
                 {categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                       activeCategory === category.id
                         ? 'bg-golden-honey text-deep-indigo'

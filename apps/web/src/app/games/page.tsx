@@ -2,7 +2,7 @@
 
 import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Search, Trophy, Zap, Brain, Target, Users, Star, Bell, Swords, Puzzle, Calculator, BookOpen, Crown, Flame } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { PageTransition } from '../../components/PageTransition'
 import Image from 'next/image'
@@ -31,7 +31,7 @@ export default function GamesPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('All')
   const pathname = usePathname()
 
-  const games: Game[] = [
+  const games: Game[] = useMemo(() => [
     // Puzzles
     { id: 1, name: 'Sudoku Classic', description: 'Number puzzle game for logic lovers', category: 'Puzzles', mode: 'Solo', difficulty: 'Medium', players: '1 Player', honeyReward: 10, icon: Puzzle, color: 'from-blue-500 to-cyan-500', featured: true },
     { id: 2, name: 'Word Search', description: 'Find hidden words in the grid', category: 'Puzzles', mode: 'Solo', difficulty: 'Easy', players: '1 Player', honeyReward: 5, icon: BookOpen, color: 'from-green-500 to-emerald-500' },
@@ -56,15 +56,15 @@ export default function GamesPage() {
     { id: 15, name: 'Speed Typing Test', description: 'Type fast and accurately to win', category: 'Challenges', mode: 'Solo', difficulty: 'Easy', players: '1 Player', honeyReward: 10, icon: Zap, color: 'from-green-500 to-emerald-500' },
     { id: 16, name: 'Weekly Tournament', description: 'Compete against all players for top prizes', category: 'Challenges', mode: 'Tournament', difficulty: 'Hard', players: 'Unlimited', honeyReward: 500, entryCost: 50, icon: Trophy, color: 'from-yellow-500 to-orange-500', featured: true },
     { id: 17, name: 'Daily Challenge', description: 'New challenge every day!', category: 'Challenges', mode: 'Solo', difficulty: 'Medium', players: '1 Player', honeyReward: 35, icon: Flame, color: 'from-red-500 to-pink-500', featured: true },
-  ]
+  ], [])
 
-  const categories: { id: Category; label: string; icon: any }[] = [
+  const categories: { id: Category; label: string; icon: any }[] = useMemo(() => [
     { id: 'All', label: 'All Games', icon: Gamepad2 },
     { id: 'Puzzles', label: 'Puzzles', icon: Puzzle },
     { id: 'Strategy', label: 'Strategy', icon: Target },
     { id: 'Trivia', label: 'Trivia', icon: Brain },
     { id: 'Challenges', label: 'Challenges', icon: Trophy },
-  ]
+  ], [])
 
   const filteredGames = useMemo(() => {
     return games.filter(game => {
@@ -74,6 +74,10 @@ export default function GamesPage() {
       return matchesSearch && matchesCategory
     })
   }, [searchQuery, activeCategory, games])
+
+  const handleCategoryChange = useCallback((category: Category) => {
+    setActiveCategory(category)
+  }, [])
 
   const getDifficultyColor = (difficulty: Difficulty) => {
     switch (difficulty) {
@@ -91,7 +95,7 @@ export default function GamesPage() {
     }
   }
 
-  const featuredGames = games.filter(g => g.featured)
+  const featuredGames = useMemo(() => games.filter(g => g.featured), [games])
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">
@@ -194,7 +198,7 @@ export default function GamesPage() {
                 {categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                       activeCategory === category.id
                         ? 'bg-golden-honey text-deep-indigo'

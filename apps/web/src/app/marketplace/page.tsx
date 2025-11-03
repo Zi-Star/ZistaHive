@@ -2,7 +2,7 @@
 
 import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Search, Package, Briefcase, Smartphone, Shirt, Sparkles, BookOpen, Headphones, Monitor, Code, Megaphone, Share2, Star, Bell, ShoppingCart, Zap, TrendingUp, Award } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { PageTransition } from '../../components/PageTransition'
 import Image from 'next/image'
@@ -50,7 +50,7 @@ export default function MarketplacePage() {
   const [serviceCategory, setServiceCategory] = useState<ServiceCategory>('All')
   const pathname = usePathname()
 
-  const products: Product[] = [
+  const products: Product[] = useMemo(() => [
     // Tech
     { id: 1, name: 'Wireless Earbuds Pro', description: 'Premium sound quality, 24hr battery', category: 'Tech', price: 3500, honeyDiscount: 10, rating: 4.5, reviews: 128, seller: 'TechHub KE', icon: Headphones, color: 'from-blue-500 to-cyan-500', inStock: true },
     { id: 2, name: 'Smartphone Stand', description: 'Adjustable phone holder for desk', category: 'Tech', price: 800, honeyDiscount: 5, rating: 4.2, reviews: 64, seller: 'Gadget Store', icon: Smartphone, color: 'from-indigo-500 to-purple-500', inStock: true },
@@ -71,9 +71,9 @@ export default function MarketplacePage() {
     { id: 11, name: 'Atomic Habits', description: 'James Clear - Build better habits', category: 'Books', price: 1500, honeyDiscount: 10, rating: 4.9, reviews: 421, seller: 'Book Worms', icon: BookOpen, color: 'from-yellow-500 to-orange-500', inStock: true },
     { id: 12, name: 'Rich Dad Poor Dad', description: 'Robert Kiyosaki - Financial literacy', category: 'Books', price: 1300, honeyDiscount: 10, rating: 4.8, reviews: 389, seller: 'Book Worms', icon: BookOpen, color: 'from-green-500 to-emerald-500', inStock: true },
     { id: 13, name: 'The 48 Laws of Power', description: 'Robert Greene - Strategy & influence', category: 'Books', price: 1800, rating: 4.7, reviews: 298, seller: 'Book Worms', icon: BookOpen, color: 'from-red-500 to-pink-500', inStock: true },
-  ]
+  ], [])
 
-  const services: Service[] = [
+  const services: Service[] = useMemo(() => [
     // Digital Marketing (Zista Services)
     { id: 1, name: 'Instagram Growth Package', description: '1000 followers + engagement boost', category: 'Digital Marketing', price: 5000, honeyDiscount: 20, duration: '7 days', provider: 'Zista SMML', rating: 4.8, reviews: 156, featured: true, icon: Share2, color: 'from-purple-500 to-pink-500' },
     { id: 2, name: 'Social Media Management', description: 'Daily posts + engagement for 1 month', category: 'Digital Marketing', price: 15000, honeyDiscount: 30, duration: '30 days', provider: 'Zista SMML', rating: 4.9, reviews: 89, featured: true, icon: Megaphone, color: 'from-blue-500 to-cyan-500' },
@@ -89,22 +89,22 @@ export default function MarketplacePage() {
     { id: 8, name: 'Logo Design', description: '3 concepts + unlimited revisions', category: 'Design', price: 4000, honeyDiscount: 15, duration: '3 days', provider: 'Zista Creative', rating: 4.8, reviews: 112, icon: Sparkles, color: 'from-pink-500 to-rose-500' },
     { id: 9, name: 'Social Media Graphics Pack', description: '20 custom posts + story templates', category: 'Design', price: 6000, honeyDiscount: 20, duration: '5 days', provider: 'Zista Creative', rating: 4.7, reviews: 78, icon: Share2, color: 'from-cyan-500 to-blue-500' },
     { id: 10, name: 'Brand Identity Package', description: 'Logo + color palette + typography', category: 'Design', price: 15000, honeyDiscount: 30, duration: '14 days', provider: 'Zista Creative', rating: 4.9, reviews: 45, featured: true, icon: Award, color: 'from-purple-500 to-violet-500' },
-  ]
+  ], [])
 
-  const productCategories: { id: ProductCategory; label: string; icon: any }[] = [
+  const productCategories: { id: ProductCategory; label: string; icon: any }[] = useMemo(() => [
     { id: 'All', label: 'All Products', icon: Package },
     { id: 'Tech', label: 'Tech', icon: Smartphone },
     { id: 'Fashion', label: 'Fashion', icon: Shirt },
     { id: 'Beauty', label: 'Beauty', icon: Sparkles },
     { id: 'Books', label: 'Books', icon: BookOpen },
-  ]
+  ], [])
 
-  const serviceCategories: { id: ServiceCategory; label: string; icon: any }[] = [
+  const serviceCategories: { id: ServiceCategory; label: string; icon: any }[] = useMemo(() => [
     { id: 'All', label: 'All Services', icon: Briefcase },
     { id: 'Digital Marketing', label: 'Marketing', icon: Megaphone },
     { id: 'Web Development', label: 'Web Dev', icon: Code },
     { id: 'Design', label: 'Design', icon: Sparkles },
-  ]
+  ], [])
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -124,7 +124,19 @@ export default function MarketplacePage() {
     })
   }, [searchQuery, serviceCategory, services])
 
-  const featuredServices = services.filter(s => s.featured)
+  const featuredServices = useMemo(() => services.filter(s => s.featured), [services])
+
+  const handleTabChange = useCallback((tab: Tab) => {
+    setActiveTab(tab)
+  }, [])
+
+  const handleProductCategoryChange = useCallback((category: ProductCategory) => {
+    setProductCategory(category)
+  }, [])
+
+  const handleServiceCategoryChange = useCallback((category: ServiceCategory) => {
+    setServiceCategory(category)
+  }, [])
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">
@@ -180,7 +192,7 @@ export default function MarketplacePage() {
             {/* Tab Switcher */}
             <div className="flex gap-2 mb-6">
               <button
-                onClick={() => setActiveTab('Products')}
+                onClick={() => handleTabChange('Products')}
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
                   activeTab === 'Products'
                     ? 'bg-golden-honey text-deep-indigo'
@@ -191,7 +203,7 @@ export default function MarketplacePage() {
                 Products
               </button>
               <button
-                onClick={() => setActiveTab('Services')}
+                onClick={() => handleTabChange('Services')}
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
                   activeTab === 'Services'
                     ? 'bg-golden-honey text-deep-indigo'
@@ -225,7 +237,7 @@ export default function MarketplacePage() {
                     {productCategories.map((category) => (
                       <button
                         key={category.id}
-                        onClick={() => setProductCategory(category.id)}
+                        onClick={() => handleProductCategoryChange(category.id)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                           productCategory === category.id
                             ? 'bg-golden-honey text-deep-indigo'
@@ -338,7 +350,7 @@ export default function MarketplacePage() {
                     {serviceCategories.map((category) => (
                       <button
                         key={category.id}
-                        onClick={() => setServiceCategory(category.id)}
+                        onClick={() => handleServiceCategoryChange(category.id)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                           serviceCategory === category.id
                             ? 'bg-golden-honey text-deep-indigo'

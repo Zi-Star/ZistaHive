@@ -1,8 +1,8 @@
 'use client'
 
-import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Search, Download, QrCode, Calculator, Lock, RefreshCw, Image as ImageIcon, FileText, Palette, Code2, Hash, Star, Bell, Instagram, Twitter, Music, Video, Scissors, Zap, FileImage, FileSpreadsheet, Percent, Clock, Globe } from 'lucide-react'
+import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Search, Download, QrCode, Calculator, Lock, RefreshCw, Image as ImageIcon, FileText, Palette, Code2, Hash, Star, Bell, Instagram, Twitter, Music, Scissors, Zap, FileImage, FileSpreadsheet, Percent, Clock, Globe } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { PageTransition } from '../../components/PageTransition'
 import ImageComponent from 'next/image'
@@ -24,14 +24,14 @@ export default function ToolsPage() {
   const [activeCategory, setActiveCategory] = useState<Category>('All')
   const pathname = usePathname()
 
-  const tools: Tool[] = [
+  const tools: Tool[] = useMemo(() => [
     // Downloads
     { id: 1, name: 'YouTube Downloader', icon: Download, category: 'Downloads', description: 'Download videos and audio', color: 'from-red-500 to-pink-500', honey: 10 },
     { id: 2, name: 'Instagram Downloader', icon: Instagram, category: 'Downloads', description: 'Save Instagram media', color: 'from-purple-500 to-pink-500', honey: 10 },
     { id: 3, name: 'Twitter Video', icon: Twitter, category: 'Downloads', description: 'Download Twitter videos', color: 'from-blue-400 to-cyan-500', honey: 10 },
     { id: 4, name: 'TikTok Downloader', icon: Music, category: 'Downloads', description: 'Save TikTok videos', color: 'from-pink-500 to-rose-500', honey: 10 },
     
-    // Image Tools
+    // Image Tools  
     { id: 5, name: 'Image Compressor', icon: ImageIcon, category: 'Image', description: 'Reduce image file size', color: 'from-indigo-500 to-blue-500', honey: 5 },
     { id: 6, name: 'Photo Collage', icon: FileImage, category: 'Image', description: 'Create photo collages', color: 'from-purple-500 to-violet-500', honey: 5 },
     { id: 7, name: 'Background Remover', icon: Scissors, category: 'Image', description: 'Remove image backgrounds', color: 'from-cyan-500 to-blue-500', honey: 10 },
@@ -57,9 +57,9 @@ export default function ToolsPage() {
     { id: 19, name: 'JSON Formatter', icon: Code2, category: 'Developer', description: 'Format & validate JSON', color: 'from-yellow-500 to-orange-500', honey: 0 },
     { id: 20, name: 'Color Picker', icon: Palette, category: 'Developer', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
     { id: 21, name: 'Base64 Encoder', icon: Code2, category: 'Developer', description: 'Encode/decode Base64', color: 'from-indigo-500 to-purple-500', honey: 0 },
-  ]
+  ], [])
 
-  const categories: { id: Category; label: string; icon: any }[] = [
+  const categories: { id: Category; label: string; icon: any }[] = useMemo(() => [
     { id: 'All', label: 'All Tools', icon: Zap },
     { id: 'Downloads', label: 'Downloads', icon: Download },
     { id: 'Image', label: 'Image', icon: ImageIcon },
@@ -67,7 +67,7 @@ export default function ToolsPage() {
     { id: 'Calculator', label: 'Calculator', icon: Calculator },
     { id: 'Security', label: 'Security', icon: Lock },
     { id: 'Developer', label: 'Developer', icon: Code2 },
-  ]
+  ], [])
 
   const filteredTools = useMemo(() => {
     return tools.filter(tool => {
@@ -77,6 +77,10 @@ export default function ToolsPage() {
       return matchesSearch && matchesCategory
     })
   }, [searchQuery, activeCategory, tools])
+
+  const handleCategoryChange = useCallback((category: Category) => {
+    setActiveCategory(category)
+  }, [])
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">
@@ -149,7 +153,7 @@ export default function ToolsPage() {
                 {categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                       activeCategory === category.id
                         ? 'bg-golden-honey text-deep-indigo'
