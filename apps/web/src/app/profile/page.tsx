@@ -11,7 +11,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute'
 export default function ProfilePage() {
   const router = useRouter()
   const { user: authUser, logout } = useAuth()
-  const { honeyBalance, streak } = useHoney()
+  const { honeyBalance, streak, fetchHoneyBalance } = useHoney()
   const [activeTab, setActiveTab] = useState('overview')
   const [mounted, setMounted] = useState(false)
   const [user, setUser] = useState({
@@ -58,7 +58,9 @@ export default function ProfilePage() {
     setMounted(true)
     fetchUserData()
     fetchTransactions()
-  }, [fetchUserData, fetchTransactions])
+    // Fetch honey balance from the hook
+    fetchHoneyBalance()
+  }, [fetchUserData, fetchTransactions, fetchHoneyBalance])
 
   const handleSignOut = async () => {
     try {
@@ -101,7 +103,7 @@ export default function ProfilePage() {
             <div className="flex items-center gap-2 bg-golden-honey/10 px-3 py-2 rounded-xl border border-golden-honey/30">
               <div className="text-2xl">🍯</div>
               <div>
-                <div className="text-sm font-bold text-golden-honey">{honeyBalance || user.honeyBalance}</div>
+                <div className="text-sm font-bold text-golden-honey">{honeyBalance || user.honeyBalance || 0}</div>
                 <div className="text-xs text-golden-honey/70 hidden sm:block">Honey</div>
               </div>
             </div>
@@ -132,7 +134,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="bg-deep-indigo-dark/20 backdrop-blur px-4 py-2 rounded-xl">
                       <Flame className="w-5 h-5 inline mr-2" />
-                      {streak || user.streak} Day Streak
+                      {streak || user.streak || 0} Day Streak
                     </div>
                   </div>
                 </div>
@@ -175,15 +177,15 @@ export default function ProfilePage() {
                     <div className="grid md:grid-cols-3 gap-4">
                       <div className="bg-gradient-to-br from-golden-honey to-golden-honey-dark text-deep-indigo-dark p-6 rounded-xl">
                         <div className="text-sm opacity-90 mb-1">Current Balance</div>
-                        <div className="text-3xl font-bold">{honeyBalance || user.honeyBalance} 🍯</div>
+                        <div className="text-3xl font-bold">{honeyBalance || user.honeyBalance || 0} 🍯</div>
                       </div>
                       <div className="bg-green-500/10 border border-green-500/30 p-6 rounded-xl">
                         <div className="text-sm text-green-400 mb-1">Total Earned</div>
-                        <div className="text-3xl font-bold text-green-400">{user.totalEarned}</div>
+                        <div className="text-3xl font-bold text-green-400">{user.totalEarned || 0}</div>
                       </div>
                       <div className="bg-orange-500/10 border border-orange-500/30 p-6 rounded-xl">
                         <div className="text-sm text-orange-400 mb-1">Total Spent</div>
-                        <div className="text-3xl font-bold text-orange-400">{user.totalSpent}</div>
+                        <div className="text-3xl font-bold text-orange-400">{user.totalSpent || 0}</div>
                       </div>
                     </div>
 
