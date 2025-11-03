@@ -12,18 +12,6 @@ export default function ProfilePage() {
   const { user: authUser, logout, isAuthenticated, isLoading: authLoading } = useAuth()
   const { honeyBalance, streak } = useHoney()
   const [activeTab, setActiveTab] = useState('overview')
-  const [user, setUser] = useState({
-    name: 'Loading...',
-    email: '',
-    honeyBalance: 0,
-    totalEarned: 0,
-    totalSpent: 0,
-    beeRank: 'Worker Bee',
-    streak: 0,
-    avatar: null as string | null,
-    bio: '',
-    location: '',
-  })
   const [transactions, setTransactions] = useState<any[]>([])
 
   useEffect(() => {
@@ -31,22 +19,6 @@ export default function ProfilePage() {
     if (!isAuthenticated && !authLoading) {
       router.push('/login')
       return
-    }
-    
-    // Update user data when authUser changes
-    if (authUser) {
-      setUser({
-        name: authUser.name || 'Loading...',
-        email: authUser.email || '',
-        honeyBalance: authUser.honeyBalance || 0,
-        totalEarned: 0, // These would need to be fetched from a separate API if needed
-        totalSpent: 0,  // These would need to be fetched from a separate API if needed
-        beeRank: authUser.beeRank || 'Worker Bee',
-        streak: authUser.streak || 0,
-        avatar: authUser.avatar || null,
-        bio: '',
-        location: '',
-      })
     }
     
     // Fetch transactions
@@ -90,6 +62,20 @@ export default function ProfilePage() {
   if (!isAuthenticated && !authLoading) {
     router.push('/login')
     return null
+  }
+
+  // Get user data from authUser
+  const user = {
+    name: authUser?.name || 'Loading...',
+    email: authUser?.email || '',
+    honeyBalance: honeyBalance || 0,
+    totalEarned: 0, // These would need to be fetched from a separate API if needed
+    totalSpent: 0,  // These would need to be fetched from a separate API if needed
+    beeRank: authUser?.beeRank || 'Worker Bee',
+    streak: streak || 0,
+    avatar: authUser?.avatar || null,
+    bio: '',
+    location: '',
   }
 
   return (
@@ -216,82 +202,57 @@ export default function ProfilePage() {
               {/* Honey History Tab */}
               {activeTab === 'honey' && (
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-4">Recent Transactions</h3>
-                  <div className="space-y-3">
-                    {transactions.length > 0 ? (
-                      transactions.map((transaction, i) => (
-                        <div key={i} className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl border border-deep-indigo-light/10">
+                  <h3 className="text-lg font-bold text-white mb-4">Honey Transaction History</h3>
+                  {transactions.length > 0 ? (
+                    <div className="space-y-3">
+                      {transactions.map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl border border-deep-indigo-light/20">
                           <div>
-                            <div className="font-semibold text-white">{transaction.description || transaction.source}</div>
+                            <div className="font-medium text-white">{transaction.description}</div>
                             <div className="text-sm text-white/60">
-                              {new Date(transaction.createdAt).toLocaleDateString()} at {new Date(transaction.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              {new Date(transaction.createdAt).toLocaleDateString()}
                             </div>
                           </div>
-                          <div className={`font-bold ${transaction.type === 'earn' ? 'text-green-400' : 'text-red-400'}`}>
-                            {transaction.type === 'earn' ? '+' : '-'}{transaction.amount} 🍯
+                          <div className={`font-bold ${transaction.type === 'earn' ? 'text-green-400' : 'text-orange-400'}`}>
+                            {transaction.type === 'earn' ? '+' : '-'}{transaction.amount}
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="text-center py-8 text-white/60">
-                        <Star className="w-12 h-12 mx-auto mb-4 text-golden-honey/20" />
-                        <p>No honey transactions yet</p>
-                      </div>
-                    )}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-white/60">
+                      <Star className="w-12 h-12 mx-auto mb-4 text-golden-honey/20" />
+                      <p>No honey transactions yet</p>
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Settings Tab */}
               {activeTab === 'settings' && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-white mb-4">Account Settings</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-white mb-1">Name</label>
-                        <input
-                          type="text"
-                          defaultValue={user.name}
-                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
-                        />
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-4">Account Settings</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-deep-indigo-light/10 rounded-xl border border-deep-indigo-light/20">
+                      <h4 className="font-medium text-white mb-2">Personal Information</h4>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-sm text-white/60 mb-1">Name</label>
+                          <input
+                            type="text"
+                            defaultValue={user.name}
+                            className="w-full px-3 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-golden-honey focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-white/60 mb-1">Email</label>
+                          <input
+                            type="email"
+                            defaultValue={user.email}
+                            className="w-full px-3 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-golden-honey focus:border-transparent"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-white mb-1">Bio</label>
-                        <textarea
-                          defaultValue={user.bio}
-                          rows={3}
-                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
-                          placeholder="Tell us about yourself..."
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-white mb-1">Location</label>
-                        <input
-                          type="text"
-                          defaultValue={user.location}
-                          placeholder="Nairobi, Kenya"
-                          className="w-full px-4 py-2 bg-deep-indigo-light/10 border border-deep-indigo-light/20 rounded-xl text-white focus:ring-2 focus:ring-golden-honey focus:border-transparent"
-                        />
-                      </div>
-                      <button className="bg-golden-honey hover:bg-golden-honey-dark text-deep-indigo-dark px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-colors">
-                        <Save className="w-5 h-5" />
-                        Save Changes
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-deep-indigo-light/20 pt-6">
-                    <h3 className="text-lg font-bold text-white mb-4">Preferences</h3>
-                    <div className="space-y-3">
-                      <label className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl cursor-pointer border border-deep-indigo-light/20">
-                        <span className="text-white">Email Notifications</span>
-                        <input type="checkbox" className="rounded border-deep-indigo-light/20 text-golden-honey focus:ring-golden-honey bg-deep-indigo-light/10" />
-                      </label>
-                      <label className="flex items-center justify-between p-4 bg-deep-indigo-light/10 rounded-xl cursor-pointer border border-deep-indigo-light/20">
-                        <span className="text-white">Push Notifications</span>
-                        <input type="checkbox" defaultChecked className="rounded border-deep-indigo-light/20 text-golden-honey focus:ring-golden-honey bg-deep-indigo-light/10" />
-                      </label>
                     </div>
                   </div>
                 </div>
@@ -300,32 +261,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-deep-indigo border-t border-deep-indigo-light/20 px-2 py-2 z-50 shadow-lg backdrop-blur-sm bg-deep-indigo/95">
-        <div className="max-w-7xl mx-auto flex items-center justify-around">
-          <Link href="/dashboard" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
-            <Home className="w-6 h-6" />
-            <span className="text-xs font-medium">Home</span>
-          </Link>
-          <Link href="/tools" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
-            <Wrench className="w-6 h-6" />
-            <span className="text-xs font-medium">Tools</span>
-          </Link>
-          <Link href="/learn" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
-            <GraduationCap className="w-6 h-6" />
-            <span className="text-xs font-medium">Learn</span>
-          </Link>
-          <Link href="/games" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
-            <Gamepad2 className="w-6 h-6" />
-            <span className="text-xs font-medium">Play</span>
-          </Link>
-          <Link href="/marketplace" className="flex flex-col items-center gap-1 text-white/70 hover:text-golden-honey py-2 px-4 rounded-xl transition-colors">
-            <ShoppingBag className="w-6 h-6" />
-            <span className="text-xs font-medium">Shop</span>
-          </Link>
-        </div>
-      </nav>
     </div>
   )
 }

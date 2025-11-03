@@ -23,36 +23,8 @@ export default function Dashboard() {
   const router = useRouter()
   const { user: authUser, logout, isAuthenticated, isLoading: authLoading } = useAuth()
   const { honeyBalance, streak, claimDailyReward, loading: honeyLoading } = useHoney()
-  const [user, setUser] = useState<UserData>({
-    name: 'Loading...',
-    email: '',
-    honeyBalance: 0,
-    beeRank: 'Worker Bee',
-    streak: 0,
-    avatar: null
-  })
   const [claiming, setClaiming] = useState(false)
   const [claimMessage, setClaimMessage] = useState('')
-
-  useEffect(() => {
-    // Redirect to login if not authenticated
-    if (!isAuthenticated && !authLoading) {
-      router.push('/login')
-      return
-    }
-    
-    // Update user data when authUser changes
-    if (authUser) {
-      setUser({
-        name: authUser.name || 'Loading...',
-        email: authUser.email || '',
-        honeyBalance: authUser.honeyBalance || 0,
-        beeRank: authUser.beeRank || 'Worker Bee',
-        streak: authUser.streak || 0,
-        avatar: authUser.avatar || null
-      })
-    }
-  }, [authUser, isAuthenticated, authLoading, router])
 
   const handleClaimDailyReward = async () => {
     setClaiming(true)
@@ -110,6 +82,16 @@ export default function Dashboard() {
   if (!isAuthenticated && !authLoading) {
     router.push('/login')
     return null
+  }
+
+  // Get user data from authUser
+  const user = {
+    name: authUser?.name || 'Loading...',
+    email: authUser?.email || '',
+    honeyBalance: honeyBalance || 0,
+    beeRank: authUser?.beeRank || 'Worker Bee',
+    streak: streak || 0,
+    avatar: authUser?.avatar || null
   }
 
   const quickTools = [

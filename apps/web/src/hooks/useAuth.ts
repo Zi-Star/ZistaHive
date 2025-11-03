@@ -13,6 +13,7 @@ interface User {
 
 export function useAuth(): {
   user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   session: any;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -78,6 +79,7 @@ export function useAuth(): {
     // Server-side rendering - return safe defaults
     return {
       user: null,
+      setUser,
       session: null,
       isAuthenticated: false,
       isLoading: true,
@@ -88,6 +90,7 @@ export function useAuth(): {
   // Client-side - return actual values
   return {
     user,
+    setUser,
     session: clientSession,
     isAuthenticated: clientStatus === 'authenticated',
     isLoading: clientStatus === 'loading' || loading,
@@ -130,7 +133,7 @@ export function useHoney(): {
   claimDailyReward: () => Promise<{ success: boolean; rewardAmount?: number; newBalance?: number; message?: string; error?: string; }>;
   spendHoney: (amount: number, purpose: string) => Promise<{ success: boolean; amount?: number; newBalance?: number; message?: string; error?: string; }>;
 } {
-  const { user, isAuthenticated, isLoading } = useAuth()
+  const { user, isAuthenticated, isLoading, setUser } = useAuth()
   const [honeyBalance, setHoneyBalance] = useState<number>(0)
   const [streak, setStreak] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
@@ -171,6 +174,18 @@ export function useHoney(): {
       // Update local state
       setHoneyBalance(data.newBalance)
       setStreak(data.streak)
+      
+      // Update user data in useAuth hook
+      if (setUser) {
+        setUser((prevUser: User | null) => {
+          if (!prevUser) return prevUser;
+          return {
+            ...prevUser,
+            honeyBalance: data.newBalance,
+            streak: data.streak
+          };
+        });
+      }
       
       return {
         success: true,
@@ -215,6 +230,17 @@ export function useHoney(): {
 
       // Update local state
       setHoneyBalance(data.newBalance)
+      
+      // Update user data in useAuth hook
+      if (setUser) {
+        setUser((prevUser: User | null) => {
+          if (!prevUser) return prevUser;
+          return {
+            ...prevUser,
+            honeyBalance: data.newBalance
+          };
+        });
+      }
       
       return {
         success: true,
