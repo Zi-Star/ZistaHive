@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@zistahive/database'
-import { getCurrentUser } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth-config'
+
+// Helper function to get current user
+async function getCurrentUser() {
+  const session = await getServerSession(authOptions)
+  return session?.user
+}
 
 export async function POST(request: Request) {
   try {

@@ -39,7 +39,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchUserData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authUser])
+  }, [])
 
   const fetchUserData = async () => {
     if (!authUser) {

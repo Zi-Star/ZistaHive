@@ -32,7 +32,7 @@ export default function ProfilePage() {
     setMounted(true)
     fetchUserData()
     fetchTransactions()
-  }, [authUser])
+  }, []) // Remove authUser from dependency array
 
   const fetchUserData = async () => {
     if (!authUser) return
