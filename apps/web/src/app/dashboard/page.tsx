@@ -76,11 +76,22 @@ export default function Dashboard() {
       const result = await claimDailyReward()
       
       if (result.success) {
-        setClaimMessage(result.message || `Successfully claimed ${result.rewardAmount} Honey!`)
+        // Handle the case where result has rewardAmount property
+        let message = ''
+        if ('message' in result && result.message) {
+          message = result.message
+        } else if ('rewardAmount' in result && result.rewardAmount !== undefined) {
+          message = `Successfully claimed ${result.rewardAmount} Honey!`
+        } else {
+          message = 'Successfully claimed Honey!'
+        }
+        setClaimMessage(message)
         // Refresh user data to get updated balance
         fetchUserData()
       } else {
-        setClaimMessage(result.error || 'Failed to claim daily reward')
+        // Handle the case where result has error property
+        const error = 'error' in result ? result.error : 'Failed to claim daily reward'
+        setClaimMessage(error || 'Failed to claim daily reward')
       }
     } catch (error) {
       setClaimMessage('Failed to claim daily reward')
