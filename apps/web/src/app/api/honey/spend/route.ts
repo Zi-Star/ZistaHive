@@ -33,22 +33,34 @@ export async function POST(request: Request) {
       )
     }
 
-    // Get user's honey balance
-    const userWithBalance = await prisma.user.findUnique({
+    // Get user with honey balance
+    let userWithBalance = await prisma.user.findUnique({
       where: { email: session.user.email },
       include: {
         honeyBalance: true,
       },
     })
 
-    if (!userWithBalance?.honeyBalance) {
+    if (!userWithBalance) {
       return NextResponse.json(
-        { error: 'User honey balance not found' },
+        { error: 'User not found' },
         { status: 404 }
       )
     }
 
-    const honeyBalance = userWithBalance.honeyBalance
+    // Ensure user has a honey balance, create one if missing
+    let honeyBalance = userWithBalance.honeyBalance;
+    if (!honeyBalance) {
+      honeyBalance = await prisma.honeyBalance.create({
+        data: {
+          userId: userWithBalance.id,
+          balance: 0,
+          totalEarned: 0,
+          totalSpent: 0,
+          streakDays: 0,
+        },
+      });
+    }
 
     // Check if user has enough balance
     if (honeyBalance.balance < amount) {

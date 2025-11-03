@@ -17,8 +17,8 @@ export async function GET(request: Request) {
       )
     }
 
-    // Get user's honey transactions
-    const userWithTransactions = await prisma.user.findUnique({
+    // Get user with honey transactions
+    let userWithTransactions = await prisma.user.findUnique({
       where: { email: session.user.email },
       include: {
         honeyBalance: {
@@ -34,15 +34,37 @@ export async function GET(request: Request) {
       },
     })
 
-    if (!userWithTransactions?.honeyBalance) {
+    if (!userWithTransactions) {
       return NextResponse.json(
-        { error: 'User honey balance not found' },
+        { error: 'User not found' },
         { status: 404 }
       )
     }
 
+    // Ensure user has a honey balance, create one if missing
+    let honeyBalance = userWithTransactions.honeyBalance;
+    if (!honeyBalance) {
+      honeyBalance = await prisma.honeyBalance.create({
+        data: {
+          userId: userWithTransactions.id,
+          balance: 0,
+          totalEarned: 0,
+          totalSpent: 0,
+          streakDays: 0,
+        },
+        include: {
+          transactions: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+            take: 20,
+          },
+        },
+      });
+    }
+
     return NextResponse.json({
-      transactions: userWithTransactions.honeyBalance.transactions,
+      transactions: honeyBalance.transactions || [],
     })
   } catch (error) {
     console.error('Get transactions error:', error)

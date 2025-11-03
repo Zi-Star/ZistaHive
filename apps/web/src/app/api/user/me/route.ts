@@ -39,13 +39,33 @@ export async function GET() {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
+    // Ensure user has a honey balance, create one if missing
+    let honeyBalance = user.honeyBalance;
+    if (!honeyBalance) {
+      // Create a honey balance for the user
+      const newHoneyBalance = await prisma.honeyBalance.create({
+        data: {
+          userId: user.id,
+          balance: 0,
+          totalEarned: 0,
+          totalSpent: 0,
+          streakDays: 0,
+        },
+        select: {
+          balance: true,
+          streakDays: true,
+        },
+      });
+      honeyBalance = newHoneyBalance;
+    }
+
     return NextResponse.json({
       name: user.name || 'Bee User',
       email: user.email,
       avatar: user.image,
       beeRank: user.profile?.beeRank || 'Worker Bee',
-      honeyBalance: user.honeyBalance?.balance || 0,
-      streak: user.honeyBalance?.streakDays || 0,
+      honeyBalance: honeyBalance.balance || 0,
+      streak: honeyBalance.streakDays || 0,
     })
   } catch (error) {
     console.error('Failed to fetch user:', error)

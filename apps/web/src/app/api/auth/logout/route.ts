@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
-import { signOut } from 'next-auth/react'
 
 export async function POST() {
   try {
-    // In a real implementation, you might want to do additional cleanup here
-    // For now, we'll just return a success response
+    // This is a simple API endpoint that returns success
+    // The actual logout is handled client-side with next-auth
     return NextResponse.json(
       { message: 'Logged out successfully' },
       { status: 200 }

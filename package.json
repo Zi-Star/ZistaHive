@@ -16,6 +16,7 @@
     "db:push": "cd packages/database && npx prisma db push",
     "db:studio": "cd packages/database && npx prisma studio",
     "db:migrate": "cd packages/database && npx prisma migrate dev",
+    "db:ensure-honey-balances": "cd packages/database && npx tsx scripts/ensure-honey-balances.ts",
     "postinstall": "npm run db:generate"
   },
   "devDependencies": {
