@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import Head from 'next/head'
+import { SessionProvider } from 'next-auth/react'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -45,7 +46,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/Logo.png" />
       </head>
       <body className="font-sans antialiased">
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   )

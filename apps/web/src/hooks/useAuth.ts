@@ -46,7 +46,8 @@ export function useAuth(): {
     }
 
     const fetchUser = async () => {
-      if (status === 'authenticated') {
+      // Only fetch user data if we have a session
+      if (status === 'authenticated' && session) {
         try {
           const response = await fetch('/api/user/me')
           if (response.ok) {
@@ -61,7 +62,7 @@ export function useAuth(): {
     }
 
     fetchUser()
-  }, [status, isClient])
+  }, [status, session, isClient])
 
   const logout = async () => {
     // Only run on client side
