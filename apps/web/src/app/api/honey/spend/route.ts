@@ -3,6 +3,9 @@ import { prisma } from '@zistahive/database'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth-config'
 
+// Opt out of static generation for this route
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 
 interface User {
   name: string
-  email: string
+ 
   avatar?: string
   beeRank: string
   honeyBalance: number
@@ -18,20 +18,11 @@ export function useAuth() {
   const [clientSession, setClientSession] = useState<any>(null)
   const [clientStatus, setClientStatus] = useState<string>('loading')
 
+  // Always call useSession - this is required by React Hooks rules
+  const { data: session, status } = useSession()
+
   // Determine if we're on the client or server
   const isClient = typeof window !== 'undefined'
-
-  // Handle server-side rendering case
-  let sessionResult
-  if (isClient) {
-    // Only call useSession on client side
-    sessionResult = useSession()
-  } else {
-    // Server-side fallback
-    sessionResult = { data: null, status: 'loading' }
-  }
-  
-  const { data: session, status } = sessionResult
 
   useEffect(() => {
     // Update client-side state when session changes
