@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { useAuth, useHoney } from '@/hooks/useAuth'
 
 interface UserData {
+  id?: string
   name: string
   email: string
   honeyBalance: number
@@ -25,6 +26,11 @@ export default function Dashboard() {
   const { honeyBalance, streak, claimDailyReward, loading: honeyLoading } = useHoney()
   const [claiming, setClaiming] = useState(false)
   const [claimMessage, setClaimMessage] = useState('')
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleClaimDailyReward = async () => {
     setClaiming(true)
@@ -67,7 +73,7 @@ export default function Dashboard() {
   }
 
   // Show loading state while authenticating
-  if (authLoading) {
+  if (authLoading || !isClient) {
     return (
       <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
         <div className="text-center">

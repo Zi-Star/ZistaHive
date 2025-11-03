@@ -13,10 +13,15 @@ export default function ProfilePage() {
   const { honeyBalance, streak } = useHoney()
   const [activeTab, setActiveTab] = useState('overview')
   const [transactions, setTransactions] = useState<any[]>([])
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     // Redirect to login if not authenticated
-    if (!isAuthenticated && !authLoading) {
+    if (!isClient || (!isAuthenticated && !authLoading)) {
       router.push('/login')
       return
     }
@@ -34,8 +39,10 @@ export default function ProfilePage() {
       }
     }
     
-    fetchTransactions()
-  }, [authUser, isAuthenticated, authLoading, router])
+    if (isClient) {
+      fetchTransactions()
+    }
+  }, [authUser, isAuthenticated, authLoading, router, isClient])
 
   const handleSignOut = async () => {
     try {
@@ -47,7 +54,7 @@ export default function ProfilePage() {
   }
 
   // Show loading state while authenticating
-  if (authLoading) {
+  if (authLoading || !isClient) {
     return (
       <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
         <div className="text-center">

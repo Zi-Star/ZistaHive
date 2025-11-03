@@ -76,7 +76,7 @@ export default function ToolsPage() {
       const matchesCategory = activeCategory === 'All' || tool.category === activeCategory
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, activeCategory, tools])
+  }, [tools, searchQuery, activeCategory])
 
   const handleCategoryChange = useCallback((category: Category) => {
     setActiveCategory(category)

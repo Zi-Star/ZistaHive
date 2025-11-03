@@ -73,19 +73,19 @@ export default function LearnPage() {
       const matchesCategory = activeCategory === 'All' || course.category === activeCategory
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, activeCategory, courses])
+  }, [courses, searchQuery, activeCategory])
 
   const handleCategoryChange = useCallback((category: Category) => {
     setActiveCategory(category)
   }, [])
 
-  const getDifficultyColor = (difficulty: Difficulty) => {
+  const getDifficultyColor = useCallback((difficulty: Difficulty) => {
     switch (difficulty) {
       case 'Beginner': return 'text-green-400'
       case 'Intermediate': return 'text-yellow-400'
       case 'Advanced': return 'text-red-400'
     }
-  }
+  }, [])
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 interface User {
+  id?: string
   name: string
   email: string
   avatar?: string
@@ -25,7 +26,7 @@ export function useAuth(): {
   const [clientSession, setClientSession] = useState<any>(null)
   const [clientStatus, setClientStatus] = useState<string>('loading')
 
-  // Always call useSession - this is required by React Hooks rules
+  // Always call useSession at the top level - this is required by React Hooks rules
   const { data: session, status } = useSession()
 
   // Determine if we're on the client or server
@@ -65,14 +66,19 @@ export function useAuth(): {
     fetchUser()
   }, [status, session, isClient])
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     // Only run on client side
     if (!isClient) return
     
-    await fetch('/api/auth/logout', { method: 'POST' })
-    router.push('/login')
-    router.refresh()
-  }
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+      router.push('/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Logout error:', error)
+      router.push('/login')
+    }
+  }, [router, isClient])
 
   // Return appropriate values based on whether we're on the client or server
   if (!isClient) {
@@ -142,15 +148,15 @@ export function useHoney(): {
 
   // Initialize honey balance from user data
   useEffect(() => {
-    if (user && !isLoading) {
+    if (isClient && user && !isLoading) {
       setHoneyBalance(user.honeyBalance || 0)
       setStreak(user.streak || 0)
       setLoading(false)
     }
-  }, [user, isLoading])
+  }, [user, isLoading, isClient])
 
   // Claim daily reward
-  const claimDailyReward = async () => {
+  const claimDailyReward = useCallback(async () => {
     // Only run on client side
     if (!isClient) return { success: false, error: 'Not available on server' }
     
@@ -172,8 +178,8 @@ export function useHoney(): {
       }
 
       // Update local state
-      setHoneyBalance(data.newBalance)
-      setStreak(data.streak)
+      setHoneyBalance(data.newBalance || 0)
+      setStreak(data.streak || 0)
       
       // Update user data in useAuth hook
       if (setUser) {
@@ -181,8 +187,8 @@ export function useHoney(): {
           if (!prevUser) return prevUser;
           return {
             ...prevUser,
-            honeyBalance: data.newBalance,
-            streak: data.streak
+            honeyBalance: data.newBalance || 0,
+            streak: data.streak || 0
           };
         });
       }
@@ -203,10 +209,10 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isClient, setUser])
 
   // Spend honey
-  const spendHoney = async (amount: number, purpose: string) => {
+  const spendHoney = useCallback(async (amount: number, purpose: string) => {
     // Only run on client side
     if (!isClient) return { success: false, error: 'Not available on server' }
     
@@ -229,7 +235,7 @@ export function useHoney(): {
       }
 
       // Update local state
-      setHoneyBalance(data.newBalance)
+      setHoneyBalance(data.newBalance || 0)
       
       // Update user data in useAuth hook
       if (setUser) {
@@ -237,7 +243,7 @@ export function useHoney(): {
           if (!prevUser) return prevUser;
           return {
             ...prevUser,
-            honeyBalance: data.newBalance
+            honeyBalance: data.newBalance || 0
           };
         });
       }
@@ -258,7 +264,7 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isClient, setUser])
 
   if (!isClient) {
     // Server-side rendering - return safe defaults

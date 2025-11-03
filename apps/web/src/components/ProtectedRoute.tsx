@@ -11,19 +11,21 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
-  const [mounted, setMounted] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-    
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
     // Only redirect if we're on the client and not loading
-    if (typeof window !== 'undefined' && !isLoading && !isAuthenticated) {
+    if (isClient && !isLoading && !isAuthenticated) {
       router.push('/login')
     }
-  }, [isAuthenticated, isLoading, router])
+  }, [isAuthenticated, isLoading, router, isClient])
 
   // Don't render anything during server-side rendering or while mounting
-  if (!mounted || isLoading) {
+  if (!isClient || isLoading) {
     return (
       <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
         <div className="text-center">

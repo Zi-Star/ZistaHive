@@ -73,27 +73,27 @@ export default function GamesPage() {
       const matchesCategory = activeCategory === 'All' || game.category === activeCategory
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, activeCategory, games])
+  }, [games, searchQuery, activeCategory])
 
   const handleCategoryChange = useCallback((category: Category) => {
     setActiveCategory(category)
   }, [])
 
-  const getDifficultyColor = (difficulty: Difficulty) => {
+  const getDifficultyColor = useCallback((difficulty: Difficulty) => {
     switch (difficulty) {
       case 'Easy': return 'text-green-400'
       case 'Medium': return 'text-yellow-400'
       case 'Hard': return 'text-red-400'
     }
-  }
+  }, [])
 
-  const getModeIcon = (mode: GameMode) => {
+  const getModeIcon = useCallback((mode: GameMode) => {
     switch (mode) {
       case 'Solo': return <User className="w-3 h-3" />
       case 'Multiplayer': return <Users className="w-3 h-3" />
       case 'Tournament': return <Trophy className="w-3 h-3" />
     }
-  }
+  }, [])
 
   const featuredGames = useMemo(() => games.filter(g => g.featured), [games])
 

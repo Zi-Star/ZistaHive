@@ -10,12 +10,24 @@ interface PageTransitionProps {
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsTransitioning(true)
-    const timer = setTimeout(() => setIsTransitioning(false), 150)
-    return () => clearTimeout(timer)
-  }, [pathname])
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    // Only run on client side
+    if (isClient) {
+      setIsTransitioning(true)
+      const timer = setTimeout(() => setIsTransitioning(false), 150)
+      return () => clearTimeout(timer)
+    }
+  }, [pathname, isClient])
+
+  if (!isClient) {
+    return <>{children}</>
+  }
 
   return (
     <div

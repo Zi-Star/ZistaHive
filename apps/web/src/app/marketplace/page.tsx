@@ -113,7 +113,7 @@ export default function MarketplacePage() {
       const matchesCategory = productCategory === 'All' || product.category === productCategory
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, productCategory, products])
+  }, [products, searchQuery, productCategory])
 
   const filteredServices = useMemo(() => {
     return services.filter(service => {
@@ -122,7 +122,7 @@ export default function MarketplacePage() {
       const matchesCategory = serviceCategory === 'All' || service.category === serviceCategory
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, serviceCategory, services])
+  }, [services, searchQuery, serviceCategory])
 
   const featuredServices = useMemo(() => services.filter(s => s.featured), [services])
 

@@ -1,21 +1,21 @@
 'use client'
 
-import { Header } from '../components/Header'
-import { Footer } from '../components/Footer'
 import { 
   Download, QrCode, Calculator, Lock, FileText, Palette, RefreshCw, Image as ImageIcon, 
   Code2, Hash, Smartphone, Zap, Users, Trophy, TrendingUp, Star, Play, BookOpen, 
   Gamepad2, ShoppingBag, ArrowRight, CheckCircle, Youtube, Instagram, Twitter, 
   Music, Scissors, FileImage, FileSpreadsheet, Percent, Clock, Globe, 
   Medal, Crown, Flame, Award, ShoppingCart, Gift, Heart, MessageCircle,
-  Wrench as WrenchIcon
+  Wrench as WrenchIcon, GraduationCap, User
 } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ImageComponent from 'next/image'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
+  const { user, isAuthenticated, isLoading } = useAuth()
   
   useEffect(() => {
     setIsVisible(true)
@@ -30,7 +30,7 @@ export default function Home() {
     { icon: Calculator, name: 'Calculator', category: 'Calculator', description: 'Advanced calculator', color: 'from-green-500 to-emerald-500', honey: 0 },
     { icon: Lock, name: 'Password Generator', category: 'Security', description: 'Generate secure passwords', color: 'from-purple-500 to-violet-500', honey: 0 },
     { icon: FileText, name: 'PDF Tools', category: 'Document', description: 'Merge, split PDFs', color: 'from-teal-500 to-cyan-500', honey: 5 },
-    { icon: Palette, name: 'Color Picker', category: 'Developer', description: 'Pick &amp; convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
+    { icon: Palette, name: 'Color Picker', category: 'Developer', description: 'Pick & convert colors', color: 'from-pink-500 to-rose-500', honey: 0 },
   ]
 
   // Courses data
@@ -83,7 +83,111 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      {/* Header */}
+      <header className="bg-deep-indigo border-b border-deep-indigo-light/20 px-4 lg:px-6 py-3 flex items-center justify-between sticky top-0 z-50 backdrop-blur-sm bg-deep-indigo/95">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-3">
+            <ImageComponent 
+              src="/Logo.png" 
+              alt="Zista Logo" 
+              width={32} 
+              height={32} 
+              className="w-8 h-8"
+            />
+            <span className="text-xl font-bold text-white">Zista</span>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-1">
+            <Link 
+              href="/tools" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                false 
+                  ? 'text-golden-honey bg-golden-honey/10' 
+                  : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
+              }`}
+            >
+              <WrenchIcon className="w-4 h-4" />
+              <span className="font-medium">Tools</span>
+            </Link>
+            <Link 
+              href="/learn" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                false 
+                  ? 'text-golden-honey bg-golden-honey/10' 
+                  : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
+              }`}
+            >
+              <GraduationCap className="w-4 h-4" />
+              <span className="font-medium">Learn</span>
+            </Link>
+            <Link 
+              href="/games" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                false 
+                  ? 'text-golden-honey bg-golden-honey/10' 
+                  : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
+              }`}
+            >
+              <Gamepad2 className="w-4 h-4" />
+              <span className="font-medium">Play</span>
+            </Link>
+            <Link 
+              href="/marketplace" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                false 
+                  ? 'text-golden-honey bg-golden-honey/10' 
+                  : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
+              }`}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span className="font-medium">Shop</span>
+            </Link>
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {isAuthenticated && !isLoading && user ? (
+            <>
+              <div className="flex items-center gap-2 bg-golden-honey/10 px-3 py-2 rounded-xl border border-golden-honey/30">
+                <div className="text-2xl">🍯</div>
+                <div>
+                  <div className="text-sm font-bold text-golden-honey">{user.honeyBalance || 0}</div>
+                  <div className="text-xs text-golden-honey/70 hidden sm:block">Honey</div>
+                </div>
+              </div>
+              <Link href="/profile">
+                <div className="w-9 h-9 bg-gradient-to-br from-golden-honey to-golden-honey-dark rounded-xl flex items-center justify-center">
+                  {user.avatar ? (
+                    <ImageComponent 
+                      src={user.avatar} 
+                      alt={user.name} 
+                      width={40} 
+                      height={40} 
+                      className="w-full h-full rounded-xl object-cover" 
+                    />
+                  ) : (
+                    <User className="w-5 h-5 text-deep-indigo" />
+                  )}
+                </div>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <button className="px-4 py-2 text-white/70 hover:text-golden-honey font-medium transition-colors">
+                  Login
+                </button>
+              </Link>
+              <Link href="/signup">
+                <button className="px-6 py-2 bg-golden-honey hover:bg-golden-honey-dark text-deep-indigo-dark font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg">
+                  Sign Up
+                </button>
+              </Link>
+            </>
+          )}
+        </div>
+      </header>
+      
       <main className="min-h-screen bg-deep-indigo-dark">
         {/* Hero Section with Storytelling */}
         <section className="relative overflow-hidden">
@@ -165,7 +269,7 @@ export default function Home() {
                         <div className="pt-16 p-6 h-full flex flex-col">
                           <div className="text-center mb-6">
                             <div className="inline-flex items-center gap-2 bg-golden-honey/10 px-3 py-1 rounded-full border border-golden-honey/30">
-                              <span className="text-2xl">&#127853;</span>
+                              <span className="text-2xl">🍯</span>
                               <span className="text-golden-honey font-bold">125</span>
                             </div>
                           </div>
@@ -196,7 +300,7 @@ export default function Home() {
                         
                         {/* Floating Elements */}
                         <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-golden-honey/20 backdrop-blur-sm border border-golden-honey/30 flex items-center justify-center animate-pulse">
-                          <span className="text-2xl">&#127853;</span>
+                          <span className="text-2xl">🍯</span>
                         </div>
                         <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-accent-cyan/20 backdrop-blur-sm border border-accent-cyan/30 flex items-center justify-center animate-pulse delay-300">
                           <Zap className="w-5 h-5 text-accent-cyan" />
@@ -205,10 +309,10 @@ export default function Home() {
                       
                       {/* Floating Honey Elements */}
                       <div className="absolute -top-8 -left-8 w-20 h-20 rounded-full bg-golden-honey/10 backdrop-blur-sm border border-golden-honey/20 flex items-center justify-center animate-bounce">
-                        <span className="text-3xl">&#127853;</span>
+                        <span className="text-3xl">🍯</span>
                       </div>
                       <div className="absolute -bottom-8 -right-8 w-16 h-16 rounded-full bg-golden-honey/10 backdrop-blur-sm border border-golden-honey/20 flex items-center justify-center animate-bounce delay-500">
-                        <span className="text-2xl">&#127853;</span>
+                        <span className="text-2xl">🍯</span>
                       </div>
                     </div>
                   </div>
@@ -572,7 +676,7 @@ export default function Home() {
               <div className="bg-gradient-to-r from-golden-honey to-golden-honey-dark rounded-2xl p-8 text-center text-deep-indigo-dark">
                 <Award className="w-12 h-12 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold mb-2">Daily Earning Potential</h3>
-                <div className="text-4xl font-bold mb-4">95 &#127853;/day</div>
+                <div className="text-4xl font-bold mb-4">95 🍯/day</div>
                 <p className="text-lg opacity-90 mb-6">
                   That&apos;s <span className="font-bold">2,850 Honey/month</span> to spend on premium features!
                 </p>
@@ -587,7 +691,79 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <Footer />
+      
+      {/* Footer */}
+      <footer className="bg-deep-indigo border-t border-deep-indigo-light/20 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <ImageComponent 
+                  src="/Logo.png" 
+                  alt="Zista Logo" 
+                  width={32} 
+                  height={32} 
+                  className="w-8 h-8"
+                />
+                <span className="text-xl font-bold text-white">Zista</span>
+              </div>
+              <p className="text-white/70 mb-4">
+                Your all-in-one productivity hive for tools, learning, games & rewards.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" className="w-10 h-10 rounded-full bg-deep-indigo-light/30 flex items-center justify-center hover:bg-golden-honey/20 transition-colors">
+                  <Youtube className="w-5 h-5 text-white" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-deep-indigo-light/30 flex items-center justify-center hover:bg-golden-honey/20 transition-colors">
+                  <Instagram className="w-5 h-5 text-white" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-deep-indigo-light/30 flex items-center justify-center hover:bg-golden-honey/20 transition-colors">
+                  <Twitter className="w-5 h-5 text-white" />
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold text-white mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li><Link href="/tools" className="text-white/70 hover:text-golden-honey transition-colors">Tools</Link></li>
+                <li><Link href="/learn" className="text-white/70 hover:text-golden-honey transition-colors">Learning</Link></li>
+                <li><Link href="/games" className="text-white/70 hover:text-golden-honey transition-colors">Games</Link></li>
+                <li><Link href="/marketplace" className="text-white/70 hover:text-golden-honey transition-colors">Marketplace</Link></li>
+                <li><Link href="/pricing" className="text-white/70 hover:text-golden-honey transition-colors">Pricing</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold text-white mb-4">Company</h3>
+              <ul className="space-y-2">
+                <li><Link href="/about" className="text-white/70 hover:text-golden-honey transition-colors">About</Link></li>
+                <li><Link href="/blog" className="text-white/70 hover:text-golden-honey transition-colors">Blog</Link></li>
+                <li><Link href="/careers" className="text-white/70 hover:text-golden-honey transition-colors">Careers</Link></li>
+                <li><Link href="/contact" className="text-white/70 hover:text-golden-honey transition-colors">Contact</Link></li>
+                <li><Link href="/partners" className="text-white/70 hover:text-golden-honey transition-colors">Partners</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold text-white mb-4">Legal</h3>
+              <ul className="space-y-2">
+                <li><Link href="/terms" className="text-white/70 hover:text-golden-honey transition-colors">Terms</Link></li>
+                <li><Link href="/privacy" className="text-white/70 hover:text-golden-honey transition-colors">Privacy</Link></li>
+                <li><Link href="/cookies" className="text-white/70 hover:text-golden-honey transition-colors">Cookies</Link></li>
+                <li><Link href="/security" className="text-white/70 hover:text-golden-honey transition-colors">Security</Link></li>
+                <li><Link href="/compliance" className="text-white/70 hover:text-golden-honey transition-colors">Compliance</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-deep-indigo-light/20 mt-8 pt-8 text-center">
+            <p className="text-white/50">
+              &copy; {new Date().getFullYear()} Z-Star | Life in Motion. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   )
 }
