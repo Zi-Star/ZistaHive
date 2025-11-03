@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Youtube, Instagram, Twitter } from 'lucide-react'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
 
 export function Footer() {
   const [isClient, setIsClient] = useState(false)
