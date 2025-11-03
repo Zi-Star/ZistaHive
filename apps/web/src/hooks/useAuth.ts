@@ -4,14 +4,20 @@ import { useRouter } from 'next/navigation'
 
 interface User {
   name: string
- 
+  email: string
   avatar?: string
   beeRank: string
   honeyBalance: number
   streak: number
 }
 
-export function useAuth() {
+export function useAuth(): {
+  user: User | null;
+  session: any;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  logout: () => Promise<void>;
+} {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -88,7 +94,10 @@ export function useAuth() {
   }
 }
 
-export function useRequireAuth(redirectUrl = '/login') {
+export function useRequireAuth(redirectUrl = '/login'): {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+} {
   const router = useRouter()
   const { isAuthenticated, isLoading } = useAuth()
   const isClient = typeof window !== 'undefined'
@@ -112,7 +121,14 @@ export function useRequireAuth(redirectUrl = '/login') {
 }
 
 // Honey management hook
-export function useHoney() {
+export function useHoney(): {
+  honeyBalance: number;
+  streak: number;
+  loading: boolean;
+  error: string | null;
+  claimDailyReward: () => Promise<{ success: boolean; rewardAmount?: number; newBalance?: number; message?: string; error?: string; }>;
+  spendHoney: (amount: number, purpose: string) => Promise<{ success: boolean; amount?: number; newBalance?: number; message?: string; error?: string; }>;
+} {
   const { user, isAuthenticated, isLoading } = useAuth()
   const [honeyBalance, setHoneyBalance] = useState<number>(0)
   const [streak, setStreak] = useState<number>(0)
