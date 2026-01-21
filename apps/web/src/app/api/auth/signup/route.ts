@@ -13,6 +13,19 @@ export async function POST(request: Request) {
       )
     }
 
+    // Normalize email to lowercase and trim
+    const normalizedEmail = email.toLowerCase().trim()
+    const normalizedName = name.trim()
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(normalizedEmail)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
     if (password.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters' },
@@ -22,7 +35,7 @@ export async function POST(request: Request) {
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     })
 
     if (existingUser) {
@@ -38,8 +51,8 @@ export async function POST(request: Request) {
     // Create user, profile, and honey balance in a transaction
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: normalizedName,
+        email: normalizedEmail,
         password: hashedPassword,
         profile: {
           create: {

@@ -1,5 +1,6 @@
+'use client'
+
 import { useState, useEffect, useCallback } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 interface User {
@@ -23,83 +24,44 @@ export function useAuth(): {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [clientSession, setClientSession] = useState<any>(null)
-  const [clientStatus, setClientStatus] = useState<string>('loading')
-
-  // Always call useSession at the top level - this is required by React Hooks rules
-  const { data: session, status } = useSession()
-
-  // Determine if we're on the client or server
-  const isClient = typeof window !== 'undefined'
 
   useEffect(() => {
-    // Update client-side state when session changes
-    if (isClient) {
-      setClientSession(session)
-      setClientStatus(status)
-    }
-  }, [session, status, isClient])
+    // Check for stored authentication data
+    const userData = localStorage.getItem('user-data')
 
-  useEffect(() => {
-    // Only run on client side
-    if (!isClient) {
-      setLoading(false)
-      return
-    }
-
-    const fetchUser = async () => {
-      // Only fetch user data if we have a session
-      if (status === 'authenticated' && session) {
-        try {
-          const response = await fetch('/api/user/me')
-          if (response.ok) {
-            const userData = await response.json()
-            setUser(userData)
-          }
-        } catch (error) {
-          console.error('Failed to fetch user data:', error)
-        }
+    if (userData) {
+      try {
+        const parsedUser = JSON.parse(userData)
+        setUser(parsedUser)
+      } catch (error) {
+        console.error('Failed to parse user data:', error)
+        // Clear invalid data
+        localStorage.removeItem('user-data')
       }
-      setLoading(false)
     }
 
-    fetchUser()
-  }, [status, session, isClient])
+    setLoading(false)
+  }, [])
 
   const logout = useCallback(async () => {
-    // Only run on client side
-    if (!isClient) return
-    
     try {
-      await fetch('/api/auth/logout', { method: 'POST' })
+      // Clear local storage
+      localStorage.removeItem('user-data')
+      setUser(null)
       router.push('/login')
       router.refresh()
     } catch (error) {
       console.error('Logout error:', error)
       router.push('/login')
     }
-  }, [router, isClient])
+  }, [router])
 
-  // Return appropriate values based on whether we're on the client or server
-  if (!isClient) {
-    // Server-side rendering - return safe defaults
-    return {
-      user: null,
-      setUser,
-      session: null,
-      isAuthenticated: false,
-      isLoading: true,
-      logout,
-    }
-  }
-
-  // Client-side - return actual values
   return {
     user,
     setUser,
-    session: clientSession,
-    isAuthenticated: clientStatus === 'authenticated',
-    isLoading: clientStatus === 'loading' || loading,
+    session: { user }, // Mock session object
+    isAuthenticated: !!user,
+    isLoading: loading,
     logout,
   }
 }
@@ -110,23 +72,13 @@ export function useRequireAuth(redirectUrl = '/login'): {
 } {
   const router = useRouter()
   const { isAuthenticated, isLoading } = useAuth()
-  const isClient = typeof window !== 'undefined'
 
   useEffect(() => {
-    // Only run on client side
-    if (!isClient) return
-    
     if (!isLoading && !isAuthenticated) {
       router.push(redirectUrl)
     }
-  }, [isAuthenticated, isLoading, router, redirectUrl, isClient])
+  }, [isAuthenticated, isLoading, router, redirectUrl])
 
-  if (!isClient) {
-    // Server-side rendering - return safe defaults
-    return { isAuthenticated: false, isLoading: true }
-  }
-
-  // Client-side - return actual values
   return { isAuthenticated, isLoading }
 }
 
@@ -144,22 +96,22 @@ export function useHoney(): {
   const [streak, setStreak] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const isClient = typeof window !== 'undefined'
 
   // Initialize honey balance from user data
   useEffect(() => {
-    if (isClient && user && !isLoading) {
+    if (user && !isLoading) {
       setHoneyBalance(user.honeyBalance || 0)
       setStreak(user.streak || 0)
       setLoading(false)
+    } else if (!isAuthenticated && !isLoading) {
+      setHoneyBalance(0)
+      setStreak(0)
+      setLoading(false)
     }
-  }, [user, isLoading, isClient])
+  }, [user, isLoading, isAuthenticated])
 
   // Claim daily reward
   const claimDailyReward = useCallback(async () => {
-    // Only run on client side
-    if (!isClient) return { success: false, error: 'Not available on server' }
-    
     try {
       setLoading(true)
       setError(null)
@@ -209,13 +161,10 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }, [isClient, setUser])
+  }, [setUser])
 
   // Spend honey
   const spendHoney = useCallback(async (amount: number, purpose: string) => {
-    // Only run on client side
-    if (!isClient) return { success: false, error: 'Not available on server' }
-    
     try {
       setLoading(true)
       setError(null)
@@ -264,21 +213,8 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }, [isClient, setUser])
+  }, [setUser])
 
-  if (!isClient) {
-    // Server-side rendering - return safe defaults
-    return {
-      honeyBalance: 0,
-      streak: 0,
-      loading: true,
-      error: null,
-      claimDailyReward: async () => ({ success: false, error: 'Not available on server' }),
-      spendHoney: async () => ({ success: false, error: 'Not available on server' }),
-    }
-  }
-
-  // Client-side - return actual values
   return {
     honeyBalance,
     streak,

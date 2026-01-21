@@ -30,19 +30,41 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
+      // Normalize email to lowercase and trim
+      const normalizedEmail = email.toLowerCase().trim()
+
+      if (!normalizedEmail || !password) {
+        setError('Please fill in all fields')
+        setLoading(false)
+        return
+      }
+
+      // Use custom login API instead of NextAuth for now
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          password,
+        }),
       })
 
-      if (result?.error) {
-        setError('Invalid email or password')
-      } else if (result?.ok) {
-        router.push('/dashboard')
-        router.refresh()
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Login failed')
+        return
       }
+
+      // Store user data in localStorage
+      localStorage.setItem('user-data', JSON.stringify(data.user))
+
+      router.push('/dashboard')
+      router.refresh()
     } catch (err) {
+      console.error('Login error:', err)
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)

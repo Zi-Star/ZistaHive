@@ -37,35 +37,53 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      })
+      // Normalize email to lowercase and trim
+      const normalizedEmail = email.toLowerCase().trim()
+      const normalizedName = name.trim()
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || 'Something went wrong')
+      if (!normalizedName || !normalizedEmail || !password) {
+        setError('Please fill in all fields')
         setLoading(false)
         return
       }
 
-      // Auto sign in after signup
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
+      // Create account
+      const signupResponse = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: normalizedName, email: normalizedEmail, password }),
       })
 
-      if (result?.error) {
+      const signupData = await signupResponse.json()
+
+      if (!signupResponse.ok) {
+        setError(signupData.error || 'Something went wrong')
+        setLoading(false)
+        return
+      }
+
+      // Auto sign in after signup using custom login
+      const loginResponse = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalizedEmail, password }),
+      })
+
+      const loginData = await loginResponse.json()
+
+      if (!loginResponse.ok) {
         setError('Account created but login failed. Please try logging in.')
         router.push('/login')
-      } else if (result?.ok) {
-        router.push('/dashboard')
-        router.refresh()
+        return
       }
+
+      // Store user data
+      localStorage.setItem('user-data', JSON.stringify(loginData.user))
+
+      router.push('/dashboard')
+      router.refresh()
     } catch (err) {
+      console.error('Signup error:', err)
       setError('Something went wrong. Please try again.')
       setLoading(false)
     }

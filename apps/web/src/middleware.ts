@@ -1,21 +1,10 @@
-import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    // Custom logic can be added here if needed
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token
-    },
-    pages: {
-      signIn: '/login',
-      error: '/login',
-    },
-  }
-)
+export default function middleware(req: any) {
+  // For now, allow all routes since we're using custom authentication
+  // Add authentication checks here later if needed
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [
