@@ -26,10 +26,10 @@ export default function Dashboard() {
   const { honeyBalance, streak, claimDailyReward, loading: honeyLoading } = useHoney()
   const [claiming, setClaiming] = useState(false)
   const [claimMessage, setClaimMessage] = useState('')
-  const [isClient, setIsClient] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsClient(true)
+    setMounted(true)
   }, [])
 
   const handleClaimDailyReward = async () => {
@@ -73,7 +73,7 @@ export default function Dashboard() {
   }
 
   // Show loading state while authenticating
-  if (authLoading || !isClient) {
+  if (authLoading || !mounted) {
     return (
       <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
         <div className="text-center">

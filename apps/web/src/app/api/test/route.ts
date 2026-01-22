@@ -13,8 +13,9 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Test API error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { status: 'error', message: 'Database connection failed', error: error.message },
+      { status: 'error', message: 'Database connection failed', error: errorMessage },
       { status: 500 }
     )
   }
@@ -31,8 +32,9 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     console.error('Test POST API error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { status: 'error', message: 'POST request failed', error: error.message },
+      { status: 'error', message: 'POST request failed', error: errorMessage },
       { status: 500 }
     )
   }

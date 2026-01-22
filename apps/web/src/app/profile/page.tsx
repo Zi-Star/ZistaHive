@@ -13,23 +13,27 @@ export default function ProfilePage() {
   const { honeyBalance, streak } = useHoney()
   const [activeTab, setActiveTab] = useState('overview')
   const [transactions, setTransactions] = useState<any[]>([])
-  const [isClient, setIsClient] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setIsClient(true)
+    setMounted(true)
   }, [])
 
   useEffect(() => {
     // Redirect to login if not authenticated
-    if (!isClient || (!isAuthenticated && !authLoading)) {
+    if (mounted && !isAuthenticated && !authLoading) {
       router.push('/login')
       return
     }
-    
+
     // Fetch transactions
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('/api/honey/transactions')
+        const response = await fetch('/api/honey/transactions', {
+          headers: {
+            'x-user-id': authUser?.id || '',
+          },
+        })
         if (response.ok) {
           const data = await response.json()
           setTransactions(data.transactions || [])
@@ -38,11 +42,11 @@ export default function ProfilePage() {
         console.error('Failed to fetch transactions:', error)
       }
     }
-    
-    if (isClient) {
+
+    if (mounted && authUser?.id) {
       fetchTransactions()
     }
-  }, [authUser, isAuthenticated, authLoading, router, isClient])
+  }, [authUser, isAuthenticated, authLoading, router, mounted])
 
   const handleSignOut = async () => {
     try {
@@ -54,7 +58,7 @@ export default function ProfilePage() {
   }
 
   // Show loading state while authenticating
-  if (authLoading || !isClient) {
+  if (authLoading || !mounted) {
     return (
       <div className="min-h-screen bg-deep-indigo-dark flex items-center justify-center">
         <div className="text-center">
@@ -217,7 +221,7 @@ export default function ProfilePage() {
                           <div>
                             <div className="font-medium text-white">{transaction.description}</div>
                             <div className="text-sm text-white/60">
-                              {new Date(transaction.createdAt).toLocaleDateString()}
+                              {mounted ? new Date(transaction.createdAt).toLocaleDateString() : 'Loading...'}
                             </div>
                           </div>
                           <div className={`font-bold ${transaction.type === 'earn' ? 'text-green-400' : 'text-orange-400'}`}>

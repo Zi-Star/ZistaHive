@@ -1,21 +1,30 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth-config'
 import { prisma } from '@zistahive/database'
 
 // Opt out of static generation for this route
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    // Get user ID from headers (set by frontend)
+    const userId = request.headers.get('x-user-id')
 
-    if (!session?.user?.email) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Verify user exists
+    const userCheck = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true }
+    })
+
+    if (!userCheck) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { id: userId },
       select: {
         id: true,
         name: true,

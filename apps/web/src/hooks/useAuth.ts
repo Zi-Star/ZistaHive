@@ -112,14 +112,19 @@ export function useHoney(): {
 
   // Claim daily reward
   const claimDailyReward = useCallback(async () => {
+    if (!user?.id) {
+      return { success: false, error: 'User not authenticated' }
+    }
+
     try {
       setLoading(true)
       setError(null)
-      
+
       const response = await fetch('/api/honey/daily-reward', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-user-id': user.id,
         },
       })
 
@@ -161,18 +166,23 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }, [setUser])
+  }, [setUser, user])
 
   // Spend honey
   const spendHoney = useCallback(async (amount: number, purpose: string) => {
+    if (!user?.id) {
+      return { success: false, error: 'User not authenticated' }
+    }
+
     try {
       setLoading(true)
       setError(null)
-      
+
       const response = await fetch('/api/honey/spend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-user-id': user.id,
         },
         body: JSON.stringify({ amount, purpose }),
       })
@@ -213,7 +223,7 @@ export function useHoney(): {
     } finally {
       setLoading(false)
     }
-  }, [setUser])
+  }, [setUser, user])
 
   return {
     honeyBalance,
