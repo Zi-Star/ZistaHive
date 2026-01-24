@@ -58,8 +58,11 @@ export default function LoginPage() {
         return
       }
 
-      // Store user data in localStorage
+      // Store user data and session token
       localStorage.setItem('user-data', JSON.stringify(data.user))
+      if (data.sessionToken) {
+        localStorage.setItem('session-token', data.sessionToken)
+      }
 
       router.push('/dashboard')
       router.refresh()

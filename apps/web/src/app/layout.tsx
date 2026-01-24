@@ -24,12 +24,13 @@ export const metadata: Metadata = {
   authors: [{ name: 'Ziramzis' }],
   creator: 'Z-Star | Life in Motion',
   manifest: '/manifest.json',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: '#FFC300',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
 }
 
 export default function RootLayout({

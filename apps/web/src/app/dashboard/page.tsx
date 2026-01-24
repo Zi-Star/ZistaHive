@@ -3,11 +3,12 @@
 import { Home, Wrench, GraduationCap, Gamepad2, ShoppingBag, User, Bell, Trophy, Flame, Star, TrendingUp, Download, QrCode, Calculator, Lock, RefreshCw, Plus, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PageTransition } from '../../components/PageTransition'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useAuth, useHoney } from '@/hooks/useAuth'
+import { AppHeader } from '@/components/AppHeader'
+import { BottomNavigation } from '@/components/BottomNavigation'
 
 interface UserData {
   id?: string
@@ -110,49 +111,8 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col h-screen bg-deep-indigo-dark">
-      {/* Top Bar */}
-      <header className="bg-deep-indigo border-b border-deep-indigo-light/20 px-4 lg:px-6 py-3 flex items-center justify-between sticky top-0 z-50 backdrop-blur-sm bg-deep-indigo/95">
-        <Link href="/" className="flex items-center gap-3">
-          <Image 
-            src="/Logo.png" 
-            alt="Zista Logo" 
-            width={32} 
-            height={32} 
-            className="w-8 h-8"
-          />
-          <span className="text-xl font-bold text-white">Zista</span>
-        </Link>
-
-        <div className="flex items-center gap-3">
-          {/* Honey Balance */}
-          <div className="flex items-center gap-2 bg-golden-honey/10 px-3 py-2 rounded-xl border border-golden-honey/30">
-            <div className="text-2xl">🍯</div>
-            <div>
-              <div className="text-sm font-bold text-golden-honey">{honeyBalance || 0}</div>
-              <div className="text-xs text-golden-honey/70 hidden sm:block">Honey</div>
-            </div>
-          </div>
-
-          <button className="relative p-2 hover:bg-deep-indigo-light/30 rounded-xl transition-colors">
-            <Bell className="w-5 h-5 text-white" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          <Link href="/profile" className="flex items-center gap-2 hover:bg-deep-indigo-light/30 rounded-xl p-2 transition-colors">
-            <div className="w-9 h-9 bg-gradient-to-br from-golden-honey to-golden-honey-dark rounded-xl flex items-center justify-center">
-              <User className="w-5 h-5 text-deep-indigo" />
-            </div>
-            <div className="hidden lg:block">
-              <div className="text-sm font-semibold text-white leading-tight">{user.name}</div>
-              <div className="text-xs text-golden-honey">{user.beeRank}</div>
-            </div>
-          </Link>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <PageTransition>
-        <main className="flex-1 overflow-y-auto pb-20">
+      <AppHeader />
+      <main className="flex-1 overflow-y-auto pb-20">
         <div className="max-w-7xl mx-auto p-4 lg:p-6">
           <div className="mb-6">
             <h1 className="text-2xl lg:text-3xl font-bold text-white mb-1">
@@ -303,68 +263,7 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-    </PageTransition>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-deep-indigo border-t border-deep-indigo-light/20 px-2 py-2 z-50 shadow-lg backdrop-blur-sm bg-deep-indigo/95">
-        <div className="max-w-7xl mx-auto flex items-center justify-around">
-          <Link 
-            href="/dashboard" 
-            className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
-              pathname === '/dashboard' 
-                ? 'text-golden-honey bg-golden-honey/10' 
-                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
-            }`}
-          >
-            <Home className="w-6 h-6" strokeWidth={pathname === '/dashboard' ? 2.5 : 2} />
-            <span className="text-xs font-medium">Home</span>
-          </Link>
-          <Link 
-            href="/tools" 
-            className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
-              pathname === '/tools' 
-                ? 'text-golden-honey bg-golden-honey/10' 
-                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
-            }`}
-          >
-            <Wrench className="w-6 h-6" strokeWidth={pathname === '/tools' ? 2.5 : 2} />
-            <span className="text-xs font-medium">Tools</span>
-          </Link>
-          <Link 
-            href="/learn" 
-            className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
-              pathname === '/learn' 
-                ? 'text-golden-honey bg-golden-honey/10' 
-                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
-            }`}
-          >
-            <GraduationCap className="w-6 h-6" strokeWidth={pathname === '/learn' ? 2.5 : 2} />
-            <span className="text-xs font-medium">Learn</span>
-          </Link>
-          <Link 
-            href="/games" 
-            className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
-              pathname === '/games' 
-                ? 'text-golden-honey bg-golden-honey/10' 
-                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
-            }`}
-          >
-            <Gamepad2 className="w-6 h-6" strokeWidth={pathname === '/games' ? 2.5 : 2} />
-            <span className="text-xs font-medium">Play</span>
-          </Link>
-          <Link 
-            href="/marketplace" 
-            className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all duration-200 ${
-              pathname === '/marketplace' 
-                ? 'text-golden-honey bg-golden-honey/10' 
-                : 'text-white/70 hover:text-golden-honey hover:bg-deep-indigo-light/20'
-            }`}
-          >
-            <ShoppingBag className="w-6 h-6" strokeWidth={pathname === '/marketplace' ? 2.5 : 2} />
-            <span className="text-xs font-medium">Shop</span>
-          </Link>
-        </div>
-      </nav>
+      <BottomNavigation />
     </div>
   )
 }

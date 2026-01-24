@@ -48,9 +48,27 @@ export async function POST(request: Request) {
       )
     }
 
-    // Return user data (no JWT for now - using localStorage)
+    // Create session using Prisma Session model
+    const { randomBytes } = await import('crypto')
+    const sessionToken = randomBytes(32).toString('hex')
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 30) // 30 days
+
+    // Delete any existing sessions for this user (optional - for single session per user)
+    // Or keep multiple sessions for multi-device support
+    await prisma.session.create({
+      data: {
+        userId: user.id,
+        sessionToken,
+        expires,
+      },
+    })
+
+    // Return user data with session token
     return NextResponse.json({
       message: 'Login successful',
+      sessionToken,
+      expires,
       user: {
         id: user.id,
         name: user.name,

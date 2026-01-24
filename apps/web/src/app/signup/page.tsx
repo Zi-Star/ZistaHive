@@ -77,8 +77,11 @@ export default function SignupPage() {
         return
       }
 
-      // Store user data
+      // Store user data and session token
       localStorage.setItem('user-data', JSON.stringify(loginData.user))
+      if (loginData.sessionToken) {
+        localStorage.setItem('session-token', loginData.sessionToken)
+      }
 
       router.push('/dashboard')
       router.refresh()

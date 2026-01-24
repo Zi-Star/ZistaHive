@@ -26,27 +26,82 @@ export function useAuth(): {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check for stored authentication data
-    const userData = localStorage.getItem('user-data')
-
-    if (userData) {
-      try {
-        const parsedUser = JSON.parse(userData)
-        setUser(parsedUser)
-      } catch (error) {
-        console.error('Failed to parse user data:', error)
-        // Clear invalid data
-        localStorage.removeItem('user-data')
+    // Check for session token first (Prisma Session)
+    const sessionToken = localStorage.getItem('session-token')
+    
+    if (sessionToken) {
+      // Verify session with backend
+      fetch('/api/auth/session', {
+        headers: {
+          'x-session-token': sessionToken,
+        },
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            const data = await res.json()
+            setUser(data.user)
+            // Update localStorage with fresh user data
+            localStorage.setItem('user-data', JSON.stringify(data.user))
+          } else {
+            // Session invalid or expired, clear it
+            localStorage.removeItem('session-token')
+            localStorage.removeItem('user-data')
+            setUser(null)
+          }
+        })
+        .catch((error) => {
+          console.error('Session verification error:', error)
+          // Fallback to localStorage if session check fails
+          const userData = localStorage.getItem('user-data')
+          if (userData) {
+            try {
+              const parsedUser = JSON.parse(userData)
+              setUser(parsedUser)
+            } catch (err) {
+              console.error('Failed to parse user data:', err)
+              localStorage.removeItem('user-data')
+            }
+          }
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    } else {
+      // No session token, check localStorage as fallback
+      const userData = localStorage.getItem('user-data')
+      if (userData) {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+        } catch (error) {
+          console.error('Failed to parse user data:', error)
+          localStorage.removeItem('user-data')
+        }
       }
+      setLoading(false)
     }
-
-    setLoading(false)
   }, [])
 
   const logout = useCallback(async () => {
     try {
+      // Delete session from backend
+      const sessionToken = localStorage.getItem('session-token')
+      if (sessionToken) {
+        try {
+          await fetch('/api/auth/session', {
+            method: 'DELETE',
+            headers: {
+              'x-session-token': sessionToken,
+            },
+          })
+        } catch (error) {
+          console.error('Failed to delete session:', error)
+        }
+      }
+      
       // Clear local storage
       localStorage.removeItem('user-data')
+      localStorage.removeItem('session-token')
       setUser(null)
       router.push('/login')
       router.refresh()
@@ -138,15 +193,18 @@ export function useHoney(): {
       setHoneyBalance(data.newBalance || 0)
       setStreak(data.streak || 0)
       
-      // Update user data in useAuth hook
+      // Update user data in useAuth hook and localStorage
       if (setUser) {
         setUser((prevUser: User | null) => {
           if (!prevUser) return prevUser;
-          return {
+          const updatedUser = {
             ...prevUser,
             honeyBalance: data.newBalance || 0,
             streak: data.streak || 0
           };
+          // Update localStorage with new balance
+          localStorage.setItem('user-data', JSON.stringify(updatedUser));
+          return updatedUser;
         });
       }
       
@@ -196,14 +254,17 @@ export function useHoney(): {
       // Update local state
       setHoneyBalance(data.newBalance || 0)
       
-      // Update user data in useAuth hook
+      // Update user data in useAuth hook and localStorage
       if (setUser) {
         setUser((prevUser: User | null) => {
           if (!prevUser) return prevUser;
-          return {
+          const updatedUser = {
             ...prevUser,
             honeyBalance: data.newBalance || 0
           };
+          // Update localStorage with new balance
+          localStorage.setItem('user-data', JSON.stringify(updatedUser));
+          return updatedUser;
         });
       }
       
