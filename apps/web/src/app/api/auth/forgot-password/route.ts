@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@zistahive/database'
+// import { prisma } from '@zistahive/database'
 import bcrypt from 'bcryptjs'
 import { randomBytes } from 'crypto'
 
@@ -13,6 +13,12 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+
+    // TODO: Re-enable when Prisma is fixed
+    return NextResponse.json(
+      { error: 'Password reset temporarily disabled for deployment' },
+      { status: 503 }
+    )
 
     // Check if user exists
     const user = await prisma.user.findUnique({
