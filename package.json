@@ -17,8 +17,7 @@
     "db:studio": "cd packages/database && npx prisma studio",
     "db:migrate": "cd packages/database && npx prisma migrate dev",
     "db:ensure-honey-balances": "cd packages/database && npx tsx scripts/ensure-honey-balances.ts",
-    "verify-env": "cd apps/web && npx tsx scripts/verify-env.ts",
-    "postinstall": "npm run db:generate"
+    "verify-env": "cd apps/web && npx tsx scripts/verify-env.ts"
   },
   "devDependencies": {
     "prettier": "^3.1.0",
