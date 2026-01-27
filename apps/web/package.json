@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "cd ../../packages/database && npm run build",
+    "prebuild": "cd ../../packages/database && npm run db:generate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
